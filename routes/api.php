@@ -27,6 +27,13 @@ Route::group(['prefix' => 'users','middleware' => 'auth:api'], function(){
 
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return App\User::all();
+//Route::group(['prefix' => 'okrs','middleware' => 'auth:api'], function(){
+Route::group(['prefix' => 'okrs'], function(){
+    Route::get('/', function(Request $request){
+        return App\Okr::with('krs')->get();
+    });
+
+
+
 });
+

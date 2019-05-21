@@ -31,6 +31,10 @@ const mutations = {
     console.log('REMOVE_PROCESSING_TASK', task)
     state.processingTasks.splice(state.processingTasks.indexOf(task), 1)
   },
+    [types.SET_OKRS](state, okrs) {
+        console.log('GETTING OKRS', okrs)
+        state.okrs = okrs
+    },
 }
 
 export default mutations;

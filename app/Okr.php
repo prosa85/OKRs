@@ -10,11 +10,15 @@ class Okr extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function krs(){
-        return $this->hasMany('App\Kr');
+        return $this->hasMany('App\Kr','OKR_id');
     }
 
     public function tasks()
     {
         return $this->hasManyThrough('App\Task', 'App\Kr');
+    }
+
+    public function user(){
+        return $this->hasOne("App\User", "id", "created_by");
     }
 }

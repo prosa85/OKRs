@@ -21,7 +21,6 @@ class Kr extends Model
     }
 
     /**
-     * get all the task related to this kr
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tasks(){

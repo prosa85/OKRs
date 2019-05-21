@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import routes from "../commons/routes.js";
+
 export default {
     data() {
         return {

@@ -11,4 +11,7 @@ export const deleteItem = ({ commit }, item) => {
 export const fetchUsers = (context, data) => {
     context.commit(types.SET_USERS, data)
 }
+export const fetchOkrs = (context, data) => {
+    context.commit(types.SET_OKRS, data)
+}
 

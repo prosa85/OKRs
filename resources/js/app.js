@@ -17,23 +17,27 @@ Vue.use(Vuex)
 import mutations from './store/mutations'
 import * as actions from './store/actions'
 import * as getters from './store/getters'
+import routes from "./commons/routes.js";
+
+window.routes = routes;
 
 const debug = process.env.NODE_ENV !== 'production';
 
 const store = new Vuex.Store({
-  state: {
-    // array of grocery items
-    items: [],
-    token:'ASASDADsdfsdfSADFA!@#',
-    // array of ongoing tasks. We keep track of the tasks to show/hide the
-    // activity indicator in the groceries page.
-    processingTasks: [],
-    users:[]
-  },
-  mutations,
-  actions,
-  getters,
-  strict: debug,
+    state: {
+        // array of grocery items
+        items: [],
+        token: "ASASDADsdfsdfSADFA!@#",
+        // array of ongoing tasks. We keep track of the tasks to show/hide the
+        // activity indicator in the groceries page.
+        processingTasks: [],
+        users: [],
+        okrs: []
+    },
+    mutations,
+    actions,
+    getters,
+    strict: debug
 });
 
 
