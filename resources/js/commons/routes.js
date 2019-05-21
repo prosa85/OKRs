@@ -1,5 +1,10 @@
 export default {
-  users:{
+  ui:{
+    okrs:{
+        index:'okrs/'
+    }
+  },
+    users:{
     index:'api/users',
     current:'api/users/current'
   },

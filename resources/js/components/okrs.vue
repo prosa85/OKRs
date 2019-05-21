@@ -2,22 +2,29 @@
     <div>
         <div class="row justify-content-left">
             <div class="col-md-4" v-for="okr in okrs">
-                <div class="card user-card">
-                    <div
-                        class="card-header"
-                        v-text="okr.OKRs_title"
-                    ></div>
-                    <div class="card-body">
-                        <div>Description: {{ okr.description }}</div>
-                        <ul>
-                            <li v-for="kr in okr.krs">
 
-                                <span :class="kr.status" v-text="kr.title"></span>
-                            </li>
-                        </ul>
+                    <div class="card user-card">
+                        <a :href="getOKRRoute(okr.id)">
+                        <div
+                            class="card-header"
+                            v-text="okr.OKRs_title"
+                        ></div>
+                        </a>
+                        <div class="card-body">
+                            <div>Description: {{ okr.description }}</div>
+                            <ul>
+                                <li v-for="kr in okr.krs">
 
+                                    <span :class="kr.status" v-text="kr.title"></span>
+                                </li>
+                            </ul>
+
+                        </div>
                     </div>
-                </div>
+
+
+
+
             </div>
         </div>
     </div>
@@ -41,11 +48,17 @@
                   ? this.$store.getters.getOkrs
                   : [];
           }
-        }
+        },
+      methods:{
+          getOKRRoute(id){
+              return routes.ui.okrs.index + id
+          }
+      }
   };
 </script>
 
 <style scoped>
 .Active {color:green;}
 .Hold {color:red;}
+    a:hover .card > *{ text-decoration:unset; border-color:red }
 </style>
