@@ -32,8 +32,16 @@ Route::group(['prefix' => 'okrs'], function(){
     Route::get('/', function(Request $request){
         return App\Okr::with('krs')->get();
     });
-
-
-
+    Route::get('/{id}', function($id){
+        return App\Okr::find($id);
+    });
 });
 
+Route::group(['prefix' => 'krs'], function(){
+    Route::get('/', function(Request $request){
+        return App\kr::with('tasks')->get();
+    });
+    Route::get('/{id}', function($id){
+        return App\kr::find($id)->load(['Okr','tasks']);
+    });
+});

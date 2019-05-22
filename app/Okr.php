@@ -5,7 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Okr extends Model
-{
+{   
+    protected $fillable = [
+        "OKRs_title",
+        "description",
+        "created_by",
+        "status",
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

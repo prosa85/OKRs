@@ -1838,10 +1838,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "okrs",
   data: function data() {
@@ -1861,6 +1857,25 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getOKRRoute: function getOKRRoute(id) {
       return routes.ui.okrs.index + id;
+    },
+    getKRRoute: function getKRRoute(id) {
+      return routes.ui.krs.show(id);
+    },
+    getOkrStatus: function getOkrStatus(okr) {
+      var total = okr.krs.length;
+      var hold = okr.krs.filter(function (item) {
+        return item.status == "Hold";
+      }).length;
+      var level = hold * 100 / total;
+      var css_class = 'border-success';
+
+      if (level > 50) {
+        css_class = 'border-danger';
+      } else if (level > 30) {
+        css_class = 'border-warning';
+      }
+
+      return css_class;
     }
   }
 });
@@ -6343,7 +6358,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.Active[data-v-e0b15d30] {color:green;}\n.Hold[data-v-e0b15d30] {color:red;}\na:hover .card > *[data-v-e0b15d30]{ text-decoration:unset; border-color:red\n}\n", ""]);
+exports.push([module.i, "\n.Proposed[data-v-e0b15d30]{ color: #737373\n}\n.Active[data-v-e0b15d30] {color:blue;}\n.Completed[data-v-e0b15d30] { color:green;\n}\n.Hold[data-v-e0b15d30] {color:red;}\na:hover .card > *[data-v-e0b15d30]{ text-decoration:unset; border-color:red\n}\n", ""]);
 
 // exports
 
@@ -37909,40 +37924,63 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "row justify-content-left" },
-      _vm._l(_vm.okrs, function(okr) {
-        return _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "card user-card" }, [
-            _c("a", { attrs: { href: _vm.getOKRRoute(okr.id) } }, [
-              _c("div", {
-                staticClass: "card-header",
-                domProps: { textContent: _vm._s(okr.OKRs_title) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", [_vm._v("Description: " + _vm._s(okr.description))]),
-              _vm._v(" "),
+    _vm.okrs.length > 0
+      ? _c(
+          "div",
+          { staticClass: "row justify-content-left" },
+          _vm._l(_vm.okrs, function(okr) {
+            return _c("div", { staticClass: "col-md-4" }, [
               _c(
-                "ul",
-                _vm._l(okr.krs, function(kr) {
-                  return _c("li", [
-                    _c("span", {
-                      class: kr.status,
-                      domProps: { textContent: _vm._s(kr.title) }
+                "div",
+                {
+                  staticClass: "card user-card border ",
+                  class: _vm.getOkrStatus(okr)
+                },
+                [
+                  _c("a", { attrs: { href: _vm.getOKRRoute(okr.id) } }, [
+                    _c("div", {
+                      staticClass: "card-header",
+                      domProps: { textContent: _vm._s(okr.OKRs_title) }
                     })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", [
+                      _vm._v("Description: " + _vm._s(okr.description))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "list-group list-group-flush" },
+                      _vm._l(okr.krs, function(kr) {
+                        return _c("li", { staticClass: "list-group-item" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: _vm.getKRRoute(kr.id),
+                                title: "status: " + kr.status
+                              }
+                            },
+                            [
+                              _c("span", {
+                                class: kr.status,
+                                domProps: { textContent: _vm._s(kr.title) }
+                              })
+                            ]
+                          )
+                        ])
+                      }),
+                      0
+                    )
                   ])
-                }),
-                0
+                ]
               )
             ])
-          ])
-        ])
-      }),
-      0
-    )
+          }),
+          0
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -51324,6 +51362,13 @@ __webpack_require__.r(__webpack_exports__);
   ui: {
     okrs: {
       index: 'okrs/'
+    },
+    krs: {
+      index: 'krs/',
+      show: function show() {
+        var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        return 'krs/' + id;
+      }
     }
   },
   users: {
@@ -51660,8 +51705,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\OKRs\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\OKRs\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/Pablo/docker/OKRs/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/Pablo/docker/OKRs/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

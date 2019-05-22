@@ -6,9 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kr extends Model
 {
+
+    protected $fillable =[
+        "title",
+        "description",
+        "OKR_id",
+        "status",
+    ];
+
     public function okr()
     {
-        return $this->belongsTo('App\Okr');
+        return $this->belongsTo('App\Okr','OKR_id', 'id');
     }
 
     /**
