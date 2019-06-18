@@ -14,4 +14,10 @@ export const fetchUsers = (context, data) => {
 export const fetchOkrs = (context, data) => {
     context.commit(types.SET_OKRS, data)
 }
+export const fetchOkr = (context, data) => {
+    context.commit(types.SET_OKR, data)
+}
+export const setOkrComment = (context, data) => {
+    context.commit(types.SET_OKR_COMMENTS, data)
+}
 

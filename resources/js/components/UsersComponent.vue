@@ -20,6 +20,7 @@
 <script>
 
 export default {
+    name:'UsersComponent',
     data() {
         return {
             test: 10

@@ -19,6 +19,13 @@ class CreateOkrsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('created_by')->unsigned();
             $table->string('status')->default('Proposed');
+            $table->string('categories')->nullable();
+            $table->string('impact_groups')->nullable();
+            $table->string('contributors')->nullable();
+            $table->string('target_date')->nullable();
+            $table->string('vx_impact')->nullable();
+            $table->string('completion_date')->nullable();
+
             $table->timestamps();
         });
     }

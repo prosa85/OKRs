@@ -29,11 +29,12 @@ Route::group(['prefix' => 'users','middleware' => 'auth:api'], function(){
 
 //Route::group(['prefix' => 'okrs','middleware' => 'auth:api'], function(){
 Route::group(['prefix' => 'okrs'], function(){
-    Route::get('/', function(Request $request){
+    Route::get('/', function(Request $request)
+    {
         return App\Okr::with('krs')->get();
     });
     Route::get('/{id}', function($id){
-        return App\Okr::find($id);
+        return App\Okr::find($id)->load(['krs', 'krs.tasks', 'krs.tasks.user', 'user','comments']);
     });
 });
 
@@ -45,3 +46,7 @@ Route::group(['prefix' => 'krs'], function(){
         return App\kr::find($id)->load(['Okr','tasks']);
     });
 });
+Route::post('/notes/add-note', function(Request $request){
+
+});
+Route::resource('comments', 'CommentController');

@@ -12,10 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UsersTableSeeder::class);
-        //$this->call(OKRsTableSeeder::class);
-        //$this->call(KRsTableSeeder::class);
-        $okrs = factory(App\User::class,10)->create();
-        $okrs = factory(App\Okr::class,7)->create();
-        $okrs = factory(App\kr::class,40)->create();
+        $this->call(OKRsTableSeeder::class);
+        $this->call(KRsTableSeeder::class);
+//        $okrs = factory(App\User::class,10)->create();
+//        $okrs = factory(App\Okr::class,7)->create();
+//        $okrs = factory(App\kr::class,40)->create();
     }
 }

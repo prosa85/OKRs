@@ -3,25 +3,30 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import UsersComponent from "./components/UsersComponent";
 
 require('./bootstrap');
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 window.Vue = require('vue');
 import Vuex from 'vuex'
-
-
-Vue.use(Vuex)
-
-
-
+import VueRouter from 'vue-router'
 import mutations from './store/mutations'
 import * as actions from './store/actions'
 import * as getters from './store/getters'
 import routes from "./commons/routes.js";
+window.moment = require('moment')
+import BootstrapVue from 'bootstrap-vue'
 
 window.routes = routes;
 
+
 const debug = process.env.NODE_ENV !== 'production';
+
+Vue.use(BootstrapVue)
+Vue.use(Vuex)
+Vue.use(VueRouter)
+Vue.prototype.moment = moment
 
 const store = new Vuex.Store({
     state: {
@@ -32,7 +37,8 @@ const store = new Vuex.Store({
         // activity indicator in the groceries page.
         processingTasks: [],
         users: [],
-        okrs: []
+        okrs: [],
+        okr:{}
     },
     mutations,
     actions,
@@ -67,19 +73,54 @@ Vue.mixin({
       let data = [];
       axios.get(route)
           .then(response => {
-              console.log('set data to',response.data )
+              console.log('set data to' + model  )
               data = response.data
               store.dispatch(action,response.data)
           })
           .catch(response => {console.log('there was an error',response) })
 
         return data;
+      },
+      addBr(text){
+        if (text)
+        return text.replace(/;/g,'\n')
+      },
+      postData(route,  data){
+        self = this
+        axios.post(route, data).then(function(response){
+            self.$store.dispatch('setOkrComment',response.data)
+            return response.data
+        }).catch(function(response) {
+            console.log('error' + response)
+        })
+      },
+      deleteData(route, id){
+        axios.delete(route, id).then(function(response){
+            console.log('deleted')
+        })
       }
 
+
   }
-})
+});
+import okrs from './components/okrs.vue';
+import users from './components/UsersComponent.vue';
+import okrview from './components/okrView.vue';
+const Foo = { template: '<div>foo</div>' }
+const vr = [
+    {path:'/', component:Foo },
+    { path: '/okrs', component: okrs , name:'okrs'},
+    { path: '/okrs/:id', component: okrview, name:'okrs.show' },
+    { path: '/users', component: users }
+];
+const vrouter = new VueRouter({
+    routes: vr,
+    mode: 'history'
+});
+
 
 const app = new Vue({
     store,
-    el: '#app',
-});
+    router: vrouter
+
+}).$mount('#app');

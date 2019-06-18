@@ -24,25 +24,22 @@
     </div>
 
 </div> -->
-<div class="container">
+<div class="container-fluid p-5">
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Okrs</div>
+<!--        <okrs></okrs>-->
+        <div class="col-1">
+            <ul class="list-group">
+                <li class="list-group-item"> <router-link to="/okrs">Okrs</router-link></li>
+                <li class="list-group-item"> <router-link to="/users">Users</router-link></li>
+            </ul>
+        </div>
+        <div class="col-11">
 
-                <div class="card-body">
-
-                    <okrs></okrs>
-                </div>
-            </div>
+        <router-view></router-view>
         </div>
     </div>
+
 </div>
 
 @endsection
-<script>
-    import Okrs from "../js/components/okrs";
-    export default {
-        components: { Okrs }
-    };
-</script>
+

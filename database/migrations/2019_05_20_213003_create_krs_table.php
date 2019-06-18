@@ -17,8 +17,11 @@ class CreateKrsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('OKR_id')->unsigned();
             $table->string('title');
-            $table->string('status')->default("Proposed");
             $table->text('description')->nullable();
+            $table->enum('status',['Proposed', 'Active','Hold', 'Completed'])->default("Proposed");
+            $table->string('target_date')->nullable();
+            $table->string('completion_date')->nullable();
+            $table->string('vx_impact')->nullable();
             $table->timestamps();
         });
     }

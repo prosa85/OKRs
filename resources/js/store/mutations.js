@@ -35,6 +35,13 @@ const mutations = {
         console.log('GETTING OKRS', okrs)
         state.okrs = okrs
     },
+    [types.SET_OKR_COMMENTS](state, comment) {
+        state.okr.comments.push(comment)
+    },
+    [types.SET_OKR](state, okr) {
+        console.log('GETTING OKR', okr)
+        state.okr = okr
+    },
 }
 
 export default mutations;
