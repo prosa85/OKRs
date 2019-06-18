@@ -94,6 +94,15 @@ Vue.mixin({
             console.log('error' + response)
         })
       },
+      putData(route,  data){
+          self = this
+          axios.put(route, data).then(function(response){
+              self.$store.dispatch('setOkrComment',response.data)
+              return response.data
+          }).catch(function(response) {
+              console.log('error' + response)
+          })
+      },
       deleteData(route, id){
         axios.delete(route, id).then(function(response){
             console.log('deleted')

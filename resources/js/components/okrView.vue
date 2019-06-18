@@ -1,7 +1,12 @@
 <template>
     <div>
         <div v-if="okr.user">
-            <h3 v-text="'OKR '+ okr.id"></h3>
+            <div>
+                <h3 v-text="'OKR '+ okr.id"></h3>
+                <div class="text-right">
+                    <b-button @click="updateOKR" :enabled="needsUpdate" variant="success">Update OKR</b-button>
+                </div>
+            </div>
             <span class="float-right" v-text="'Target Date: ' + okr.target_date"></span>
             <p> Created By: {{okr.user.first_name + " " + okr.user.last_name }}</p>
 
@@ -151,7 +156,10 @@
         computed: {
             okr() {
                 return this.$store.getters.getOkr;
-            }
+            },
+            needsUpdate() {
+                return this.okr != this.formData
+            },
         },
         watch: {
             okr: function() {
@@ -172,6 +180,11 @@
             },
             getStyle(status){
                 return 'status-' +  status.toLowerCase()
+            },
+            updateOKR() {
+                this.putData("/api/okrs/"+this.okr.id, this.formData);
+                window.alert('OKR changes stored');
+
             }
         }
 
