@@ -41,7 +41,7 @@
                             ></b-form-textarea>
                         </b-form-group>
                         <h3>Notes</h3>
-                        <b-form inline class="offset-md-8 col-md-4">
+                        <b-form inline class="offset-lg-7 col-md-6 col-lg-5">
                             <b-input-group class="mb-2 mr-2">
                                 <b-input
                                     type="text"

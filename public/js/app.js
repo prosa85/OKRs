@@ -84692,7 +84692,7 @@ var render = function() {
                           _c(
                             "b-form",
                             {
-                              staticClass: "offset-md-8 col-md-4",
+                              staticClass: "offset-lg-7 col-md-6 col-lg-5",
                               attrs: { inline: "" }
                             },
                             [
@@ -85266,7 +85266,7 @@ var render = function() {
           "div",
           { staticClass: "row justify-content-left" },
           _vm._l(_vm.okrs, function(okr) {
-            return _c("div", { staticClass: "col-md-12 okr-block" }, [
+            return _c("div", { staticClass: "col-md-6 okr-block" }, [
               _c(
                 "div",
                 {
@@ -85396,7 +85396,7 @@ var render = function() {
                                   },
                                   [
                                     _c("span", {
-                                      staticClass: "col-md-1",
+                                      staticClass: "col-md-2",
                                       class: kr.status,
                                       domProps: {
                                         textContent: _vm._s("KR-" + kr.id)
@@ -85404,7 +85404,7 @@ var render = function() {
                                     }),
                                     _vm._v(" "),
                                     _c("span", {
-                                      staticClass: "col-md-11",
+                                      staticClass: "col-md-10",
                                       class: kr.status,
                                       domProps: {
                                         textContent: _vm._s(kr.title)

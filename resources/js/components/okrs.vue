@@ -2,7 +2,7 @@
     <div>
         <!--<input v-model="message">-->
         <div v-if="okrs.length > 0" class="row justify-content-left">
-            <div class="col-md-12 okr-block" v-for="okr in okrs">
+            <div class="col-md-6 okr-block" v-for="okr in okrs">
                 <div class="card border-okr-card border" :class="getOkrStatus(okr)">
 
                         <div
@@ -33,8 +33,8 @@
                             <ul class="list-group list-group-flush" style="white-space: pre-line;">
                                 <li v-for="kr in okr.krs" class="list-group-item">
                                     <a :href="getKRRoute(kr.id)" :title = "'status: ' + kr.status " class="row">
-                                        <span :class="kr.status" class="col-md-1" v-text="'KR-'+kr.id"></span>
-                                        <span :class="kr.status" class="col-md-11" v-text="kr.title"></span>
+                                        <span :class="kr.status" class="col-md-2" v-text="'KR-'+kr.id"></span>
+                                        <span :class="kr.status" class="col-md-10" v-text="kr.title"></span>
                                         <!--<router-link :to="{ name: 'okr', params: { id:  }}">User</router-link>-->
                                     </a>
                                     <div v-html="addBr(kr.description)">
