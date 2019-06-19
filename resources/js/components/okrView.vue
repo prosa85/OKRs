@@ -58,8 +58,12 @@
                                 <b-form inline class="float-right">
                                     <label v-text="note.created_at" class="mr-2"
                                     ></label>
-                                    <b-button size="sm" title="Delete Note" @click="deleteNote(note)"
-                                              variant="link" class="text-danger"><i class="fas fa-trash-alt"></i>
+                                    <b-button size="sm"
+                                              title="Delete Note"
+                                              @click="deleteNote(note)"
+                                              variant="link"
+                                              class="text-danger">
+                                        <i class="fas fa-trash-alt"></i>
                                     </b-button>
 
                                 </b-form>
@@ -71,7 +75,9 @@
                 <b-col>
                     <b-form-group label="Status:">
                         <b-form-select v-model="formData.status"
-                                       :options="$store.getters.globalValues.status"></b-form-select>
+                                       :options="$store.getters.globalValues.status">
+
+                        </b-form-select>
                     </b-form-group>
 <!--                    <b-form-group label="Categories:">-->
 <!--                        <b-form-select :select-size="6" multiple v-model="formData.categoriesArray"-->
