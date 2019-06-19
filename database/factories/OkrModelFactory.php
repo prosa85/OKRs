@@ -9,6 +9,9 @@ $factory->define(App\Okr::class, function (Faker $faker) {
     return [
         "OKRs_title" => $faker->sentence($nbWords = 6),
         "description" => $faker->paragraph($nbSentences = 2),
+        "categories" => ["#Q2C", "#P&S", "#BO"],
+        "contributors" => ["@BS", "@SW", "@QA", "@ARCH"],
+        "impact_groups" => ["PAR", "CUS", "EMP"],
         "created_by" => $faker->numberBetween($min=1,$max=3),
         "status" => $faker->randomElement($array = ["Proposed", "Active", "Hold", "Completed"]),
     ];
