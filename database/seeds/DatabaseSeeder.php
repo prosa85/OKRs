@@ -14,8 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(OKRsTableSeeder::class);
         $this->call(KRsTableSeeder::class);
-//        $okrs = factory(App\User::class,10)->create();
-//        $okrs = factory(App\Okr::class,7)->create();
-//        $okrs = factory(App\kr::class,40)->create();
+        $okrs = factory(App\User::class,10)->create();
+        $okrs = factory(App\Okr::class,7)->create();
+        $okrs = factory(App\kr::class,20)->create();
+        $okrs = factory(App\Task::class,40)->create();
     }
 }

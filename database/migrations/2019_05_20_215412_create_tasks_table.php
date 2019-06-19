@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description')->nullable();
-            $table->enum('status',["Proposed", "Active", "Completed"])->default("Proposed");
+            $table->enum('status',["Proposed", "Active", "Hold","Completed"])->default("Proposed");
             $table->integer('kr_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
