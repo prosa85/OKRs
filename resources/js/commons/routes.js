@@ -15,7 +15,8 @@ export default {
     api:{
         okrs:{
             index:'/api/okrs',
-            show(id){ return '/api/okrs/' + id }
+            show(id){ return '/api/okrs/' + id },
+            status(id){return '/api/okrs/'+ id +'/status' }
         },
 
     }

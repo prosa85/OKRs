@@ -1875,6 +1875,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "okrView",
   data: function data() {
@@ -1898,6 +1945,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
+    this.getData(routes.api.okrs.status(this.$route.params.id), "Okr", "setOkrStatuses");
   },
   computed: {
     okr: function okr() {
@@ -1921,8 +1969,11 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.postData("/api/comments", newNote);
     },
-    deleteNote: function deleteNote(id) {
-      this.deleteData("/api/comments/" + id, id);
+    deleteNote: function deleteNote(note) {
+      this.deleteData("/api/comments/" + note.id, note.id);
+      this.formData.comments = this.formData.comments.filter(function (item) {
+        return item != note;
+      });
     },
     getStyle: function getStyle(status) {
       return 'status-' + status.toLowerCase();
@@ -1930,6 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
     updateOKR: function updateOKR() {
       this.putData("/api/okrs/" + this.okr.id, this.formData);
       window.alert('OKR changes stored');
+      this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
     }
   }
 });
@@ -84525,6 +84577,13 @@ var render = function() {
       _vm.okr.user
         ? _c("div", [
             _c("div", [
+              _c("span", {
+                staticClass: "float-right",
+                domProps: {
+                  textContent: _vm._s("Target Date: " + _vm.okr.target_date)
+                }
+              }),
+              _vm._v(" "),
               _c("h3", {
                 domProps: { textContent: _vm._s("OKR " + _vm.okr.id) }
               }),
@@ -84545,13 +84604,6 @@ var render = function() {
                 1
               )
             ]),
-            _vm._v(" "),
-            _c("span", {
-              staticClass: "float-right",
-              domProps: {
-                textContent: _vm._s("Target Date: " + _vm.okr.target_date)
-              }
-            }),
             _vm._v(" "),
             _c("p", [
               _vm._v(
@@ -84703,21 +84755,22 @@ var render = function() {
                                       _c(
                                         "b-button",
                                         {
+                                          staticClass: "text-danger",
                                           attrs: {
                                             size: "sm",
                                             title: "Delete Note",
-                                            variant: "outline-danger"
+                                            variant: "link"
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.deleteNote(note.id)
+                                              return _vm.deleteNote(note)
                                             }
                                           }
                                         },
                                         [
-                                          _vm._v(
-                                            "x\n                                "
-                                          )
+                                          _c("i", {
+                                            staticClass: "fas fa-trash-alt"
+                                          })
                                         ]
                                       )
                                     ],
@@ -84765,64 +84818,238 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "b-form-group",
-                    { attrs: { label: "Categories:" } },
+                    "div",
+                    { attrs: { role: "tablist" } },
                     [
-                      _c("b-form-select", {
-                        attrs: {
-                          multiple: "",
-                          options: _vm.$store.getters.globalValues.categories
-                        },
-                        model: {
-                          value: _vm.formData.categoriesArray,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "categoriesArray", $$v)
-                          },
-                          expression: "formData.categoriesArray"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    { attrs: { label: "Impact Groups:" } },
-                    [
-                      _c("b-form-select", {
-                        attrs: {
-                          multiple: "",
-                          options: _vm.$store.getters.globalValues.impact_groups
-                        },
-                        model: {
-                          value: _vm.formData.impactGroupsArray,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "impactGroupsArray", $$v)
-                          },
-                          expression: "formData.impactGroupsArray"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    { attrs: { label: "Contributors" } },
-                    [
-                      _c("b-form-select", {
-                        attrs: {
-                          multiple: "",
-                          options: _vm.$store.getters.globalValues.contributors
-                        },
-                        model: {
-                          value: _vm.formData.contributorsArray,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "contributorsArray", $$v)
-                          },
-                          expression: "formData.contributorsArray"
-                        }
-                      })
+                      _c(
+                        "b-card",
+                        { staticClass: "mb-1", attrs: { "no-body": "" } },
+                        [
+                          _c(
+                            "b-card-header",
+                            {
+                              staticClass: "p-1",
+                              attrs: { "header-tag": "header", role: "tab" }
+                            },
+                            [
+                              _c("b-button", {
+                                directives: [
+                                  {
+                                    name: "b-toggle",
+                                    rawName: "v-b-toggle.accordion-1",
+                                    modifiers: { "accordion-1": true }
+                                  }
+                                ],
+                                staticClass: "text-left text-light",
+                                attrs: {
+                                  block: "",
+                                  href: "#",
+                                  variant: "info"
+                                },
+                                domProps: {
+                                  textContent: _vm._s(
+                                    "Categories: " + _vm.formData.categories
+                                  )
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-collapse",
+                            {
+                              attrs: {
+                                id: "accordion-1",
+                                visible: "",
+                                accordion: "my-accordion",
+                                role: "tabpanel"
+                              }
+                            },
+                            [
+                              _c(
+                                "b-card-body",
+                                [
+                                  _c("b-form-select", {
+                                    attrs: {
+                                      "select-size": 4,
+                                      multiple: "",
+                                      options:
+                                        _vm.$store.getters.globalValues
+                                          .categories
+                                    },
+                                    model: {
+                                      value: _vm.formData.categoriesArray,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.formData,
+                                          "categoriesArray",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "formData.categoriesArray"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-card",
+                        { staticClass: "mb-1", attrs: { "no-body": "" } },
+                        [
+                          _c(
+                            "b-card-header",
+                            {
+                              staticClass: "p-1",
+                              attrs: { "header-tag": "header", role: "tab" }
+                            },
+                            [
+                              _c("b-button", {
+                                directives: [
+                                  {
+                                    name: "b-toggle",
+                                    rawName: "v-b-toggle.accordion-2",
+                                    modifiers: { "accordion-2": true }
+                                  }
+                                ],
+                                staticClass: "text-left text-light",
+                                attrs: {
+                                  block: "",
+                                  href: "#",
+                                  variant: "info"
+                                },
+                                domProps: {
+                                  textContent: _vm._s(
+                                    "Impact Groups: " +
+                                      _vm.formData.impact_groups
+                                  )
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-collapse",
+                            {
+                              attrs: {
+                                id: "accordion-2",
+                                accordion: "my-accordion",
+                                role: "tabpanel"
+                              }
+                            },
+                            [
+                              _c("b-form-select", {
+                                attrs: {
+                                  "select-size": 4,
+                                  multiple: "",
+                                  options:
+                                    _vm.$store.getters.globalValues
+                                      .impact_groups
+                                },
+                                model: {
+                                  value: _vm.formData.impactGroupsArray,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.formData,
+                                      "impactGroupsArray",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "formData.impactGroupsArray"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-card",
+                        { staticClass: "mb-1", attrs: { "no-body": "" } },
+                        [
+                          _c(
+                            "b-card-header",
+                            {
+                              staticClass: "p-1",
+                              attrs: { "header-tag": "header", role: "tab" }
+                            },
+                            [
+                              _c("b-button", {
+                                directives: [
+                                  {
+                                    name: "b-toggle",
+                                    rawName: "v-b-toggle.accordion-3",
+                                    modifiers: { "accordion-3": true }
+                                  }
+                                ],
+                                staticClass: "text-left text-light",
+                                attrs: {
+                                  block: "",
+                                  href: "#",
+                                  variant: "info"
+                                },
+                                domProps: {
+                                  textContent: _vm._s(
+                                    "Contributors: " + _vm.formData.contributors
+                                  )
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-collapse",
+                            {
+                              attrs: {
+                                id: "accordion-3",
+                                accordion: "my-accordion",
+                                role: "tabpanel"
+                              }
+                            },
+                            [
+                              _c(
+                                "b-card-body",
+                                [
+                                  _c("b-form-select", {
+                                    attrs: {
+                                      "select-size": 8,
+                                      multiple: "",
+                                      options:
+                                        _vm.$store.getters.globalValues
+                                          .contributors
+                                    },
+                                    model: {
+                                      value: _vm.formData.contributorsArray,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.formData,
+                                          "contributorsArray",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "formData.contributorsArray"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -84842,6 +85069,23 @@ var render = function() {
           _c("hr"),
           _vm._v(" "),
           _c("h2", [_vm._v("KRs")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "row" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._l(_vm.$store.getters.getOkrStatuses, function(st) {
+                return _c(
+                  "p",
+                  { staticClass: "col", class: _vm.getStyle(st.type) },
+                  [_vm._v(_vm._s(st.type) + ": " + _vm._s(st.count))]
+                )
+              })
+            ],
+            2
+          ),
           _vm._v(" "),
           _c(
             "b-card-group",
@@ -84985,7 +85229,16 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "col" }, [
+      _c("strong", [_vm._v("KR Status Counts:")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -101171,7 +101424,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
     processingTasks: [],
     users: [],
     okrs: [],
-    okr: {}
+    okr: {},
+    okrs_statuses: []
   },
   mutations: _store_mutations__WEBPACK_IMPORTED_MODULE_4__["default"],
   actions: _store_actions__WEBPACK_IMPORTED_MODULE_5__,
@@ -101371,6 +101625,9 @@ __webpack_require__.r(__webpack_exports__);
       index: '/api/okrs',
       show: function show(id) {
         return '/api/okrs/' + id;
+      },
+      status: function status(id) {
+        return '/api/okrs/' + id + '/status';
       }
     }
   }
@@ -101643,7 +101900,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************!*\
   !*** ./resources/js/store/actions.js ***!
   \***************************************/
-/*! exports provided: deleteItem, fetchUsers, fetchOkrs, fetchOkr, setOkrComment */
+/*! exports provided: deleteItem, fetchUsers, fetchOkrs, fetchOkr, setOkrComment, setOkrStatuses */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -101653,6 +101910,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchOkrs", function() { return fetchOkrs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchOkr", function() { return fetchOkr; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOkrComment", function() { return setOkrComment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOkrStatuses", function() { return setOkrStatuses; });
 /* harmony import */ var _mutation_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mutation-types */ "./resources/js/store/mutation-types.js");
 
 console.log('action toggleDoneItem');
@@ -101674,6 +101932,9 @@ var fetchOkr = function fetchOkr(context, data) {
 var setOkrComment = function setOkrComment(context, data) {
   context.commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR_COMMENTS"], data);
 };
+var setOkrStatuses = function setOkrStatuses(context, data) {
+  context.commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR_KR_STATUSES"], data);
+};
 
 /***/ }),
 
@@ -101681,7 +101942,7 @@ var setOkrComment = function setOkrComment(context, data) {
 /*!***************************************!*\
   !*** ./resources/js/store/getters.js ***!
   \***************************************/
-/*! exports provided: getUsers, getOkrs, getOkr, globalValues */
+/*! exports provided: getUsers, getOkrs, getOkr, getOkrStatuses, globalValues */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -101689,6 +101950,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUsers", function() { return getUsers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkrs", function() { return getOkrs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkr", function() { return getOkr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkrStatuses", function() { return getOkrStatuses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "globalValues", function() { return globalValues; });
 var getUsers = function getUsers(state) {
   // while there is at least one task processing, return true
@@ -101700,6 +101962,9 @@ var getOkrs = function getOkrs(state) {
 };
 var getOkr = function getOkr(state) {
   return state.okr;
+};
+var getOkrStatuses = function getOkrStatuses(state) {
+  return state.okrs_statuses;
 };
 var globalValues = function globalValues(state) {
   var configValues = {
@@ -101718,7 +101983,7 @@ var globalValues = function globalValues(state) {
 /*!**********************************************!*\
   !*** ./resources/js/store/mutation-types.js ***!
   \**********************************************/
-/*! exports provided: SET_ITEMS, SET_USERS, SET_OKRS, SET_OKR, SET_OKR_COMMENTS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ADD_PROCESSING_TASK, REMOVE_PROCESSING_TASK */
+/*! exports provided: SET_ITEMS, SET_USERS, SET_OKRS, SET_OKR, SET_OKR_KR_STATUSES, SET_OKR_COMMENTS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ADD_PROCESSING_TASK, REMOVE_PROCESSING_TASK */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -101727,6 +101992,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_USERS", function() { return SET_USERS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_OKRS", function() { return SET_OKRS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_OKR", function() { return SET_OKR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_OKR_KR_STATUSES", function() { return SET_OKR_KR_STATUSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_OKR_COMMENTS", function() { return SET_OKR_COMMENTS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_ITEM", function() { return ADD_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_ITEM", function() { return UPDATE_ITEM; });
@@ -101738,6 +102004,7 @@ var SET_ITEMS = 'SET_ITEMS';
 var SET_USERS = 'SET_USERS';
 var SET_OKRS = 'SET_OKRS';
 var SET_OKR = 'SET_OKR';
+var SET_OKR_KR_STATUSES = 'SET_OKR_KR_STATUSES';
 var SET_OKR_COMMENTS = 'SET_OKR_COMMENTS';
 var ADD_ITEM = 'ADD_ITEM';
 var UPDATE_ITEM = 'UPDATE_ITEM';
@@ -101797,6 +102064,9 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 }), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR"], function (state, okr) {
   console.log('GETTING OKR', okr);
   state.okr = okr;
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR_KR_STATUSES"], function (state, statuses) {
+  console.log('GETTING statuses', statuses);
+  state.okrs_statuses = statuses;
 }), _mutations);
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
 

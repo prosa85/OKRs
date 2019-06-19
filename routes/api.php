@@ -30,6 +30,7 @@ Route::group(['prefix' => 'users','middleware' => 'auth:api'], function(){
 //Route::group(['prefix' => 'okrs','middleware' => 'auth:api'], function(){
 //Route::group(['prefix' => 'okrs'], function(){
 Route::resource('okrs','OkrsController');
+Route::get('/okrs/{id}/status', 'OkrsController@status');
 //    Route::get('/', function(Request $request)
 //    {
 //        return App\Okr::with('krs')->get();

@@ -42,6 +42,10 @@ const mutations = {
         console.log('GETTING OKR', okr)
         state.okr = okr
     },
+    [types.SET_OKR_KR_STATUSES](state, statuses) {
+        console.log('GETTING statuses', statuses)
+        state.okrs_statuses = statuses
+    },
 }
 
 export default mutations;

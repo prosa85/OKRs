@@ -93,4 +93,18 @@ class OkrsController extends Controller
     {
         //
     }
+
+    public function status($id){
+        $okr = Okr::find($id);
+        $okr->load(['krs']);
+        $status = $okr->krs->groupBy('status');
+        $counts = collect();
+        $status->each(function ($item) use($counts){
+            $status['type'] = $item->first()->status;
+            $status['count'] = $item->count();
+            $counts->push($status);
+
+        });
+        return $counts;
+    }
 }

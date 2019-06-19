@@ -20,4 +20,7 @@ export const fetchOkr = (context, data) => {
 export const setOkrComment = (context, data) => {
     context.commit(types.SET_OKR_COMMENTS, data)
 }
+export const setOkrStatuses = (context, data) => {
+    context.commit(types.SET_OKR_KR_STATUSES, data)
+}
 

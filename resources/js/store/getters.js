@@ -7,8 +7,10 @@ export const getOkrs = state => {
     return state.okrs
 }
 export const getOkr = state => {
-
     return state.okr
+}
+export const getOkrStatuses = state => {
+    return state.okrs_statuses
 }
 export const globalValues = state => {
  let configValues = {

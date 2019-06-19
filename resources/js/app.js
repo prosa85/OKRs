@@ -6,6 +6,8 @@
 import UsersComponent from "./components/UsersComponent";
 
 require('./bootstrap');
+
+
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 window.Vue = require('vue');
@@ -38,7 +40,8 @@ const store = new Vuex.Store({
         processingTasks: [],
         users: [],
         okrs: [],
-        okr:{}
+        okr:{},
+        okrs_statuses:[]
     },
     mutations,
     actions,
