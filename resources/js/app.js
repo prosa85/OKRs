@@ -120,7 +120,7 @@ import users from './components/UsersComponent.vue';
 import okrview from './components/okrView.vue';
 const Foo = { template: '<div>foo</div>' }
 const vr = [
-    {path:'/', component:Foo },
+    {path:'/', component: okrs , name:'okrs' },
     { path: '/okrs', component: okrs , name:'okrs'},
     { path: '/okrs/:id', component: okrview, name:'okrs.show' },
     { path: '/users', component: users }

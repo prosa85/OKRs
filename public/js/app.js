@@ -101510,7 +101510,8 @@ var Foo = {
 };
 var vr = [{
   path: '/',
-  component: Foo
+  component: _components_okrs_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+  name: 'okrs'
 }, {
   path: '/okrs',
   component: _components_okrs_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
