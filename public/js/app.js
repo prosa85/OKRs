@@ -1927,7 +1927,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "okrView",
   data: function data() {
@@ -2059,6 +2058,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Okrs",
   data: function data() {
@@ -2101,6 +2118,28 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return css_class;
+    },
+    getStatusCountForKrs: function getStatusCountForKrs(okr) {
+      var total = okr.krs.length;
+      var completed = okr.krs.filter(function (item) {
+        return item.status == "Completed";
+      }).length;
+      var hold = okr.krs.filter(function (item) {
+        return item.status == "Hold";
+      }).length;
+      var proposed = okr.krs.filter(function (item) {
+        return item.status == "Proposed";
+      }).length;
+      var active = okr.krs.filter(function (item) {
+        return item.status == "Active";
+      }).length;
+      return {
+        total: total,
+        completed: completed,
+        proposed: proposed,
+        hold: hold,
+        active: active
+      };
     },
     countDays: function countDays(date) {
       var today = moment();
@@ -34724,7 +34763,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.status-completed {\n    color: #53a317;\n}\n.status-active{\n    color: #31b2f0;\n}\n.status-hold {\n    color: #ee0a0a;\n}\n.status-proposed{\n    color: #8e8f90;\n}\n", ""]);
+exports.push([module.i, "\n.status-completed {\n    color: #53a317;\n}\n.status-active{\n    color: #31b2f0;\n}\n.status-hold {\n    color: #ee0a0a;\n}\n.status-proposed{\n    color: #8e8f90;\n}\n.form-note {\n    width: 90% !important;\n}\n", ""]);
 
 // exports
 
@@ -84629,7 +84668,7 @@ var render = function() {
             [
               _c(
                 "b-col",
-                { attrs: { cols: "8" } },
+                { attrs: { md: "8" } },
                 [
                   _vm.okr
                     ? _c(
@@ -84696,48 +84735,6 @@ var render = function() {
                           _c("h3", [_vm._v("Notes")]),
                           _vm._v(" "),
                           _c(
-                            "b-form",
-                            {
-                              staticClass: "offset-lg-7 col-md-6 col-lg-5",
-                              attrs: { inline: "" }
-                            },
-                            [
-                              _c(
-                                "b-input-group",
-                                { staticClass: "mb-2 mr-2" },
-                                [
-                                  _c("b-input", {
-                                    attrs: {
-                                      type: "text",
-                                      required: "",
-                                      placeholder: "New Note"
-                                    },
-                                    model: {
-                                      value: _vm.newNote,
-                                      callback: function($$v) {
-                                        _vm.newNote = $$v
-                                      },
-                                      expression: "newNote"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "b-button",
-                                {
-                                  staticClass: "mb-2",
-                                  attrs: { variant: "outline-primary" },
-                                  on: { click: _vm.addNote }
-                                },
-                                [_vm._v("Save")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
                             "ul",
                             _vm._l(_vm.okr.comments, function(note) {
                               return _c(
@@ -84791,6 +84788,45 @@ var render = function() {
                               )
                             }),
                             0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-form",
+                            { attrs: { inline: "" } },
+                            [
+                              _c(
+                                "b-input-group",
+                                { staticClass: "mb-2 mr-2 form-note" },
+                                [
+                                  _c("b-input", {
+                                    attrs: {
+                                      type: "text",
+                                      required: "",
+                                      placeholder: "New Note"
+                                    },
+                                    model: {
+                                      value: _vm.newNote,
+                                      callback: function($$v) {
+                                        _vm.newNote = $$v
+                                      },
+                                      expression: "newNote"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "b-button",
+                                {
+                                  staticClass: "mb-2",
+                                  attrs: { variant: "outline-primary" },
+                                  on: { click: _vm.addNote }
+                                },
+                                [_vm._v("Save")]
+                              )
+                            ],
+                            1
                           )
                         ],
                         1
@@ -85277,7 +85313,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "card border-okr-card border",
-                  class: _vm.getOkrStatus(okr)
+                  class: okr.status == "Completed" ? "border-success" : ""
                 },
                 [
                   _c(
@@ -85320,7 +85356,9 @@ var render = function() {
                         }),
                     _vm._v(" "),
                     _c("div", [
-                      _c("strong", [_vm._v("Description:")]),
+                      _c("strong", { class: okr.status }, [
+                        _vm._v(_vm._s(" Status: " + okr.status))
+                      ]),
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
@@ -85367,90 +85405,139 @@ var render = function() {
                               innerHTML: _vm._s(_vm.addBr(okr.impact_groups))
                             }
                           })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "collapse mt-3",
-                        attrs: { id: "okr-" + okr.id }
-                      },
-                      [
-                        _c("h4", [_vm._v("KRs")]),
+                        ]),
+                        _vm._v(" "),
+                        _c("h4", { staticClass: "col-12" }, [_vm._v("KRs")]),
                         _vm._v(" "),
                         _c(
-                          "ul",
-                          {
-                            staticClass: "list-group list-group-flush",
-                            staticStyle: { "white-space": "pre-line" }
-                          },
-                          _vm._l(okr.krs, function(kr) {
-                            return _c(
-                              "li",
-                              { staticClass: "list-group-item" },
+                          "div",
+                          { staticClass: "col-10" },
+                          [
+                            _c(
+                              "b-progress",
+                              {
+                                staticClass: "mt-2",
+                                attrs: {
+                                  max: _vm.getStatusCountForKrs(okr).total,
+                                  "show-value": ""
+                                }
+                              },
                               [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass: "row",
-                                    attrs: {
-                                      href: _vm.getKRRoute(kr.id),
-                                      title: "status: " + kr.status
-                                    }
-                                  },
+                                _c("b-progress-bar", {
+                                  attrs: {
+                                    value: _vm.getStatusCountForKrs(okr)
+                                      .proposed,
+                                    variant: "secondary",
+                                    title: "completed"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("b-progress-bar", {
+                                  attrs: {
+                                    value: _vm.getStatusCountForKrs(okr).active,
+                                    variant: "primary"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("b-progress-bar", {
+                                  attrs: {
+                                    value: _vm.getStatusCountForKrs(okr).hold,
+                                    variant: "danger"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("b-progress-bar", {
+                                  attrs: {
+                                    value: _vm.getStatusCountForKrs(okr)
+                                      .completed,
+                                    variant: "success"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-2" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-primary",
+                              attrs: {
+                                type: "button",
+                                "data-toggle": "collapse",
+                                "data-target": "#okr-" + okr.id,
+                                "aria-expanded": "false",
+                                "aria-controls": "collapseExample"
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-eye" })]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "collapse mt-3",
+                            attrs: { id: "okr-" + okr.id }
+                          },
+                          [
+                            _c(
+                              "ul",
+                              {
+                                staticClass: "list-group list-group-flush",
+                                staticStyle: { "white-space": "pre-line" }
+                              },
+                              _vm._l(okr.krs, function(kr) {
+                                return _c(
+                                  "li",
+                                  { staticClass: "list-group-item" },
                                   [
-                                    _c("span", {
-                                      staticClass: "col-md-2",
-                                      class: kr.status,
-                                      domProps: {
-                                        textContent: _vm._s("KR-" + kr.id)
-                                      }
-                                    }),
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass: "row",
+                                        attrs: {
+                                          href: _vm.getKRRoute(kr.id),
+                                          title: "status: " + kr.status
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "col-md-2",
+                                          class: kr.status,
+                                          domProps: {
+                                            textContent: _vm._s("KR-" + kr.id)
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("span", {
+                                          staticClass: "col-md-10",
+                                          class: kr.status,
+                                          domProps: {
+                                            textContent: _vm._s(kr.title)
+                                          }
+                                        })
+                                      ]
+                                    ),
                                     _vm._v(" "),
-                                    _c("span", {
-                                      staticClass: "col-md-10",
-                                      class: kr.status,
+                                    _c("div", {
                                       domProps: {
-                                        textContent: _vm._s(kr.title)
+                                        innerHTML: _vm._s(
+                                          _vm.addBr(kr.description)
+                                        )
                                       }
                                     })
                                   ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(_vm.addBr(kr.description))
-                                  }
-                                })
-                              ]
+                                )
+                              }),
+                              0
                             )
-                          }),
-                          0
+                          ]
                         )
                       ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-footer" }, [
-                    _c("span", { staticStyle: { "font-size": "20px" } }, [
-                      _vm._v(" OKR " + _vm._s(okr.id))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn float-right btn-outline-primary",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "collapse",
-                          "data-target": "#okr-" + okr.id,
-                          "aria-expanded": "false",
-                          "aria-controls": "collapseExample"
-                        }
-                      },
-                      [_vm._v("+")]
                     )
                   ])
                 ]
@@ -101526,7 +101613,8 @@ var vr = [{
 }];
 var vrouter = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   routes: vr,
-  mode: 'history'
+  mode: 'history',
+  linkActiveClass: 'active'
 });
 var app = new Vue({
   store: store,

@@ -13,7 +13,7 @@
         </div>
         <b-container fluid>
             <b-form-row>
-                <b-col cols="8">
+                <b-col md="8">
                     <b-form @submit="" @reset="" v-if="okr">
                         <b-form-group
                             id="input-group-1"
@@ -41,18 +41,6 @@
                             ></b-form-textarea>
                         </b-form-group>
                         <h3>Notes</h3>
-                        <b-form inline class="offset-lg-7 col-md-6 col-lg-5">
-                            <b-input-group class="mb-2 mr-2">
-                                <b-input
-                                    type="text"
-                                    required
-                                    placeholder="New Note"
-                                    v-model="newNote"
-                                ></b-input>
-                            </b-input-group>
-                            <b-button class="mb-2" @click="addNote" variant="outline-primary">Save</b-button>
-                        </b-form>
-
                         <ul>
                             <li class="bg-light text-info" v-for="note in okr.comments">
                                 <b-form inline class="float-right">
@@ -70,6 +58,17 @@
                                 <p v-text="note.body"></p>
                             </li>
                         </ul>
+                        <b-form inline class="">
+                            <b-input-group class="mb-2 mr-2 form-note">
+                                <b-input
+                                    type="text"
+                                    required
+                                    placeholder="New Note"
+                                    v-model="newNote"
+                                ></b-input>
+                            </b-input-group>
+                            <b-button class="mb-2" @click="addNote" variant="outline-primary">Save</b-button>
+                        </b-form>
                     </b-form>
                 </b-col>
                 <b-col>
@@ -265,5 +264,8 @@
     }
     .status-proposed{
         color: #8e8f90;
+    }
+    .form-note {
+        width: 90% !important;
     }
 </style>

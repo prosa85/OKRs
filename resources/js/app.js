@@ -127,7 +127,8 @@ const vr = [
 ];
 const vrouter = new VueRouter({
     routes: vr,
-    mode: 'history'
+    mode: 'history',
+    linkActiveClass:'active'
 });
 
 
