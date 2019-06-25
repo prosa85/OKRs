@@ -110,7 +110,10 @@ Vue.mixin({
         axios.delete(route, id).then(function(response){
             console.log('deleted')
         })
-      }
+      },
+      getStyle(status){
+          return 'status-' +  status.toLowerCase()
+      },
 
 
   }

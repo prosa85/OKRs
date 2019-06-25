@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Kr extends Model
 {
+    protected $appends =['pendingTasks'];
 
     protected $fillable =[
         "title",
@@ -33,5 +35,8 @@ class Kr extends Model
      */
     public function tasks(){
         return $this->hasMany('App\Task');
+    }
+    public function getpendingTasksAttribute(){
+        return $this->tasks()->where('status', '!=','Completed' )->count();
     }
 }
