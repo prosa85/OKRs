@@ -19,24 +19,18 @@
             <div><strong>VX Impact: <span v-text="kr.vx_impact"></span></strong></div>
             <div v-if="kr.tasks.length">
                 <hr>
-                <h4>Tasks</h4>
-                <div class="text-right">Pending: {{kr.pendingTasks}}</div>
-                <ul v-for="task in kr.tasks" class="list-group">
-                    <li class="list-group-item mt-1">
-                        <kr-task :task="task"></kr-task>
-                    </li>
-                </ul>
+                <tasts-list :kr="kr"/>
             </div>
         </b-card-text>
     </b-card>
     </div>
 </template>
 <script>
-  import KrTask from "./krTask.vue";
+    import TastsList from "./TastsList";
 
-  export default {
+    export default {
     name: "kr-card",
-    components: { KrTask },
+    components: { TastsList},
     props: {
         kr: {}
     },

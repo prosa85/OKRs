@@ -139,6 +139,7 @@
         mounted() {
             this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr")
             this.getData(routes.api.okrs.status(this.$route.params.id), "Okr", "setOkrStatuses")
+            this.getData(routes.users.index, "Users", "fetchUsers");
         },
         computed: {
             okr() {

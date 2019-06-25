@@ -34,7 +34,7 @@ export const globalValues = state => {
          "$CAP",
 
      ],
-     status:['Proposed','Hold','Completed']
+     status:['Proposed','Active','Hold','Completed']
  }
     return  configValues
 }
