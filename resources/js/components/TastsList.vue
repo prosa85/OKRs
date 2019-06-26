@@ -13,26 +13,26 @@
         <div id="task-modal">
             <b-modal v-model="showModal">
                 <div slot="modal-title">
-                    <div v-if="createTaskMode">Create New Task</div>
+                    <div v-if="createTaskMode">Create New Task for KR {{ kr.id }}</div>
                     <div v-else>Task Id {{ selectedTask.id }}</div>
                 </div>
 
                 <div>
                     <b-form>
                         <b-form-group label="Status:">
-                            <b-form-select v-model="selectTask.status"
+                            <b-form-select v-model="selectedTask.status"
                                            :options="$store.getters.globalValues.status">
                             </b-form-select>
                         </b-form-group>
                         <b-form-group label="Title:">
-                            <b-form-input v-model="selectTask.title">
+                            <b-form-input v-model="selectedTask.title">
                             </b-form-input>
                         </b-form-group>
                         <b-form-group
                             label="Description:"
                         >
                             <b-form-textarea
-                                v-model="selectTask.description"
+                                v-model="selectedTask.description"
                                 type="text"
                                 required
                                 rows="2"
@@ -49,6 +49,16 @@
 
                     </b-form>
                 </div>
+                <template slot="modal-footer">
+                    <b-button
+                        variant="primary"
+                        size="sm"
+                        class="float-right"
+                        @click="createTask"
+                    >
+                        Create
+                    </b-button>
+                </template>
             </b-modal>
         </div>
     </div>
@@ -67,6 +77,7 @@
             selectedTask:{},
             showModal:false,
             createTaskMode:false,
+
         }
       },
       methods:{
@@ -77,6 +88,12 @@
         activateTaskCreateMode(){
             this.createTaskMode = true
             this.showModal = true
+            this.selectedTask = this.copyComputed(this.emptyBo)
+        },
+        createTask(){
+            this.createTaskMode = true
+            this.showModal = false
+            this.postData('/api/kr-tasks', this.selectedTask);
         },
       },
       computed:{
@@ -91,7 +108,16 @@
                     return user
                 })
                 }
-        }
+        },
+          emptyBo(){
+            return {
+                "title":"",
+                "description":"",
+                "status": "Proposed",
+                "kr_id": this.kr.id,
+                "user_id": currentUser.id
+            }
+          }
       }
   };
 </script>

@@ -13,6 +13,7 @@ $factory->define(App\Okr::class, function (Faker $faker) {
         "contributors" => ["@BS", "@SW", "@QA", "@ARCH"],
         "impact_groups" => ["PAR", "CUS", "EMP"],
         "created_by" => $faker->numberBetween($min=1,$max=3),
+        "target_date" => $faker->dateTimeThisYear('now + 5 months'),
         "status" => $faker->randomElement($array = ["Proposed", "Active", "Hold", "Completed"]),
     ];
 });

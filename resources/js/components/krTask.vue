@@ -6,10 +6,9 @@
                   :class="getStyle(task.status)"
                   v-text="'Status: ' + task.status"></span>
         </div>
-        <div><span v-text="task.title"></span></div>
-        <p v-text="task.description"></p>
-        <div>Assigned to:
-            <span class="text-success"
+        <div><strong v-text="task.title"></strong></div>
+        <p v-text="task.description" v-if="$store.getters.getExpandedView"></p>
+        <div>Assigned to: <span class="text-success"
                   v-text="task.user.first_name+ '  ' +task.user.last_name"></span>
         </div>
         <div>

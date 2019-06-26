@@ -31,25 +31,15 @@ Route::group(['prefix' => 'users','middleware' => 'auth:api'], function(){
 //Route::group(['prefix' => 'okrs'], function(){
 Route::resource('okrs','OkrsController');
 Route::resource('krs','KrsController');
+Route::resource('kr-tasks','TasksController');
 Route::get('/okrs/{id}/status', 'OkrsController@status');
-//    Route::get('/', function(Request $request)
-//    {
-//        return App\Okr::with('krs')->get();
+
+//Route::group(['prefix' => 'krs'], function(){
+//    Route::get('/', function(Request $request){
+//        return App\kr::with('tasks')->get();
 //    });
 //    Route::get('/{id}', function($id){
-//        return App\Okr::find($id)->load(['krs', 'krs.tasks', 'krs.tasks.user', 'user','comments']);
+//        return App\kr::find($id)->load(['Okr','tasks']);
 //    });
 //});
-
-Route::group(['prefix' => 'krs'], function(){
-    Route::get('/', function(Request $request){
-        return App\kr::with('tasks')->get();
-    });
-    Route::get('/{id}', function($id){
-        return App\kr::find($id)->load(['Okr','tasks']);
-    });
-});
-Route::post('/notes/add-note', function(Request $request){
-
-});
 Route::resource('comments', 'CommentController');

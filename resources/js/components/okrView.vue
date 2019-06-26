@@ -6,6 +6,8 @@
                 <h3 v-text="'OKR '+ okr.id"></h3>
                 <div class="text-right">
                     <b-button @click="updateOKR" variant="success">Update OKR</b-button>
+                    <b-button @click="expandView" v-text="$store.getters.getExpandedView? 'Expanded Yes':'Expanded No' "></b-button>
+                    <b-button @click="expandTasks()" v-text="$store.getters.getExpandedTasks? 'Show Tasks: Yes':'Show Tasks: No' "></b-button>
                 </div>
             </div>
             <p> Created By: {{okr.user.first_name + " " + okr.user.last_name }}</p>
@@ -19,23 +21,25 @@
                             id="input-group-1"
                             label="OKR Title:"
                             description=""
+
                         >
                             <b-form-textarea
                                 v-model="formData.OKRs_title"
                                 type="text"
                                 required
-                                rows="4"
+                                rows="2"
                                 placeholder="Title"
                             ></b-form-textarea>
 
                         </b-form-group>
                         <b-form-group
+                            v-if="$store.getters.getExpandedView"
                             label="Description:"
                         >
                             <b-form-textarea
                                 v-model="formData.description"
                                 type="text"
-                                rows="5"
+                                rows="3"
                                 required
                                 placeholder="description"
                             ></b-form-textarea>
@@ -53,9 +57,9 @@
                     <div role="tablist">
                         <b-card no-body class="mb-1">
                             <b-card-header header-tag="header" class="p-1" role="tab">
-                                <b-button block href="#" v-b-toggle.accordion-1 variant="info" class="text-left text-light" v-text="'Categories: ' +formData.categories"></b-button>
+                                <b-button block href="#" v-b-toggle.accordion-1 variant="light" class="text-left" v-text="'Categories: ' +formData.categories"></b-button>
                             </b-card-header>
-                            <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+                            <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
                                 <b-card-body>
                                     <b-form-select :select-size="4" multiple v-model="formData.categoriesArray"
                                                    :options="$store.getters.globalValues.categories"></b-form-select>
@@ -65,7 +69,7 @@
 
                         <b-card no-body class="mb-1">
                             <b-card-header header-tag="header" class="p-1" role="tab">
-                                <b-button block href="#" v-b-toggle.accordion-2 variant="info" class="text-left text-light" v-text="'Impact Groups: '+formData.impact_groups"></b-button>
+                                <b-button block href="#" v-b-toggle.accordion-2 variant="light" class="text-left" v-text="'Impact Groups: '+formData.impact_groups"></b-button>
                             </b-card-header>
                             <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
                                 <b-form-select :select-size="4" multiple v-model="formData.impactGroupsArray"
@@ -75,7 +79,7 @@
 
                         <b-card no-body class="mb-1">
                             <b-card-header header-tag="header" class="p-1" role="tab">
-                                <b-button block href="#" v-b-toggle.accordion-3 variant="info" class="text-left text-light" v-text="'Contributors: ' + formData.contributors"></b-button>
+                                <b-button block href="#" v-b-toggle.accordion-3 variant="light" class="text-left" v-text="'Contributors: ' + formData.contributors"></b-button>
                             </b-card-header>
                             <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
                                 <b-card-body>
@@ -157,6 +161,12 @@
                 window.alert('OKR changes stored');
                 this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
 
+            },
+            expandView(){
+                this.$store.commit('EXPANDED_VIEW')
+            },
+            expandTasks(){
+                this.$store.commit('EXPANDED_TASKS')
             }
         }
     };

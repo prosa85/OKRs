@@ -13,6 +13,7 @@ class Kr extends Model
         "title",
         "description",
         "OKR_id",
+        "target_date",
         "status",
     ];
 

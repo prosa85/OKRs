@@ -24,6 +24,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @if(Auth::user())
+    <script>
+        var currentUser = {!! json_encode(Auth::user()) !!}
+    </script>
+    @endif
 </head>
 <body>
     <div id="app">

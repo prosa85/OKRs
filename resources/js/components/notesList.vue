@@ -49,7 +49,7 @@
                   text: this.newNote,
                   model: "App\\"+ this.bo
               };
-              this.postData("/api/comments", newNote);
+              this.postData("/api/comments", newNote, true);
               this.newNote = ""
           },
           deleteNote(note) {

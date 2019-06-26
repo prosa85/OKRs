@@ -46,6 +46,12 @@ const mutations = {
         console.log('GETTING statuses', statuses)
         state.okrs_statuses = statuses
     },
+    [types.EXPANDED_VIEW](state) {
+        state.expanded.view = !state.expanded.view
+    },
+    [types.EXPANDED_TASKS](state) {
+        state.expanded.tasks = !state.expanded.tasks
+    },
 }
 
 export default mutations;

@@ -1725,6 +1725,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "kr-card",
@@ -1812,6 +1815,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "tasts-list",
@@ -1836,6 +1849,12 @@ __webpack_require__.r(__webpack_exports__);
     activateTaskCreateMode: function activateTaskCreateMode() {
       this.createTaskMode = true;
       this.showModal = true;
+      this.selectedTask = this.copyComputed(this.emptyBo);
+    },
+    createTask: function createTask() {
+      this.createTaskMode = true;
+      this.showModal = false;
+      this.postData('/api/kr-tasks', this.selectedTask);
     }
   },
   computed: {
@@ -1849,6 +1868,15 @@ __webpack_require__.r(__webpack_exports__);
           return user;
         });
       }
+    },
+    emptyBo: function emptyBo() {
+      return {
+        "title": "",
+        "description": "",
+        "status": "Proposed",
+        "kr_id": this.kr.id,
+        "user_id": currentUser.id
+      };
     }
   }
 });
@@ -1912,7 +1940,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -2002,7 +2029,7 @@ __webpack_require__.r(__webpack_exports__);
         text: this.newNote,
         model: "App\\" + this.bo
       };
-      this.postData("/api/comments", newNote);
+      this.postData("/api/comments", newNote, true);
       this.newNote = "";
     },
     deleteNote: function deleteNote(note) {
@@ -2027,6 +2054,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _KrCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./KrCard */ "./resources/js/components/KrCard.vue");
 /* harmony import */ var _notesList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./notesList */ "./resources/js/components/notesList.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -2187,6 +2218,12 @@ __webpack_require__.r(__webpack_exports__);
       this.putData("/api/okrs/" + this.okr.id, this.formData);
       window.alert('OKR changes stored');
       this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
+    },
+    expandView: function expandView() {
+      this.$store.commit('EXPANDED_VIEW');
+    },
+    expandTasks: function expandTasks() {
+      this.$store.commit('EXPANDED_TASKS');
     }
   }
 });
@@ -84781,78 +84818,80 @@ var render = function() {
       _c(
         "b-card",
         [
-          _c(
-            "b-card-title",
-            [
-              _vm.kr.pendingTasks == 0 && _vm.kr.status != "Completed"
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right",
-                      attrs: { variant: "success" },
-                      on: { click: _vm.completeKr }
-                    },
-                    [_vm._v("Complete\n        ")]
-                  )
-                : _vm._e(),
-              _vm._v(
-                "\n        " +
-                  _vm._s("KR " + _vm.kr.id + " " + _vm.kr.title) +
-                  "\n    "
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("b-card-sub-title", [
-            _vm._v(_vm._s(_vm.addBr(_vm.kr.description)))
-          ]),
-          _vm._v(" "),
-          _c("b-card-text", [
+          _c("b-card-title", { attrs: { "title-tag": "h5" } }, [
             _c(
               "div",
-              {
-                staticClass: "float-right",
-                class: _vm.getStyle(_vm.kr.status)
-              },
+              { staticClass: "text-right", class: _vm.getStyle(_vm.kr.status) },
               [
                 _c("strong", [
                   _vm._v("KR status: "),
                   _c("span", {
                     domProps: { textContent: _vm._s(_vm.kr.status) }
                   })
-                ])
-              ]
+                ]),
+                _vm._v(" "),
+                _vm.kr.pendingTasks == 0 && _vm.kr.status != "Completed"
+                  ? _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "success" },
+                        on: { click: _vm.completeKr }
+                      },
+                      [_vm._v("Complete\n            ")]
+                    )
+                  : _vm._e()
+              ],
+              1
             ),
             _vm._v(" "),
-            _c("div", [
-              _c("strong", [
-                _vm._v("Completion Date: "),
-                _c("span", {
-                  domProps: { textContent: _vm._s(_vm.kr.completion_date) }
-                })
-              ])
-            ]),
+            _c("span", {
+              domProps: {
+                textContent: _vm._s("KR " + _vm.kr.id + " " + _vm.kr.title)
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("b-card-text", [
+            _vm.kr.completion_date
+              ? _c("div", [
+                  _c("strong", [
+                    _vm._v("Completion Date: "),
+                    _c("span", {
+                      domProps: { textContent: _vm._s(_vm.kr.completion_date) }
+                    })
+                  ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _c("div", [
-              _c("strong", [
-                _vm._v("Target Date: "),
-                _c("span", {
-                  domProps: { textContent: _vm._s(_vm.kr.target_date) }
-                })
-              ])
-            ]),
+            _vm.kr.target_date
+              ? _c("div", [
+                  _c("strong", [_vm._v("Target Date: ")]),
+                  _c("span", {
+                    domProps: { textContent: _vm._s(_vm.kr.target_date) }
+                  })
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _c("div", [
-              _c("strong", [
-                _vm._v("VX Impact: "),
-                _c("span", {
-                  domProps: { textContent: _vm._s(_vm.kr.vx_impact) }
-                })
-              ])
-            ]),
+            _vm.$store.getters.getExpandedView
+              ? _c("div", [
+                  _c("strong", [
+                    _vm._v("VX Impact: "),
+                    _c("span", {
+                      domProps: { textContent: _vm._s(_vm.kr.vx_impact) }
+                    })
+                  ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _vm.kr.tasks.length
+            _vm.$store.getters.getExpandedView
+              ? _c("div", {
+                  domProps: {
+                    textContent: _vm._s(_vm.addBr(_vm.kr.description))
+                  }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.kr.tasks.length && _vm.$store.getters.getExpandedTasks
               ? _c(
                   "div",
                   [
@@ -84950,7 +84989,9 @@ var render = function() {
                 { attrs: { slot: "modal-title" }, slot: "modal-title" },
                 [
                   _vm.createTaskMode
-                    ? _c("div", [_vm._v("Create New Task")])
+                    ? _c("div", [
+                        _vm._v("Create New Task for KR " + _vm._s(_vm.kr.id))
+                      ])
                     : _c("div", [
                         _vm._v("Task Id " + _vm._s(_vm.selectedTask.id))
                       ])
@@ -84972,11 +85013,11 @@ var render = function() {
                               options: _vm.$store.getters.globalValues.status
                             },
                             model: {
-                              value: _vm.selectTask.status,
+                              value: _vm.selectedTask.status,
                               callback: function($$v) {
-                                _vm.$set(_vm.selectTask, "status", $$v)
+                                _vm.$set(_vm.selectedTask, "status", $$v)
                               },
-                              expression: "selectTask.status"
+                              expression: "selectedTask.status"
                             }
                           })
                         ],
@@ -84989,11 +85030,11 @@ var render = function() {
                         [
                           _c("b-form-input", {
                             model: {
-                              value: _vm.selectTask.title,
+                              value: _vm.selectedTask.title,
                               callback: function($$v) {
-                                _vm.$set(_vm.selectTask, "title", $$v)
+                                _vm.$set(_vm.selectedTask, "title", $$v)
                               },
-                              expression: "selectTask.title"
+                              expression: "selectedTask.title"
                             }
                           })
                         ],
@@ -85012,11 +85053,11 @@ var render = function() {
                               placeholder: "Description"
                             },
                             model: {
-                              value: _vm.selectTask.description,
+                              value: _vm.selectedTask.description,
                               callback: function($$v) {
-                                _vm.$set(_vm.selectTask, "description", $$v)
+                                _vm.$set(_vm.selectedTask, "description", $$v)
                               },
-                              expression: "selectTask.description"
+                              expression: "selectedTask.description"
                             }
                           })
                         ],
@@ -85045,8 +85086,26 @@ var render = function() {
                   )
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "template",
+                { slot: "modal-footer" },
+                [
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "float-right",
+                      attrs: { variant: "primary", size: "sm" },
+                      on: { click: _vm.createTask }
+                    },
+                    [_vm._v("\n                    Create\n                ")]
+                  )
+                ],
+                1
               )
-            ]
+            ],
+            2
           )
         ],
         1
@@ -85139,13 +85198,15 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", [
-      _c("span", { domProps: { textContent: _vm._s(_vm.task.title) } })
+      _c("strong", { domProps: { textContent: _vm._s(_vm.task.title) } })
     ]),
     _vm._v(" "),
-    _c("p", { domProps: { textContent: _vm._s(_vm.task.description) } }),
+    _vm.$store.getters.getExpandedView
+      ? _c("p", { domProps: { textContent: _vm._s(_vm.task.description) } })
+      : _vm._e(),
     _vm._v(" "),
     _c("div", [
-      _vm._v("Assigned to:\n        "),
+      _vm._v("Assigned to: "),
       _c("span", {
         staticClass: "text-success",
         domProps: {
@@ -85318,7 +85379,33 @@ var render = function() {
                       on: { click: _vm.updateOKR }
                     },
                     [_vm._v("Update OKR")]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("b-button", {
+                    domProps: {
+                      textContent: _vm._s(
+                        _vm.$store.getters.getExpandedView
+                          ? "Expanded Yes"
+                          : "Expanded No"
+                      )
+                    },
+                    on: { click: _vm.expandView }
+                  }),
+                  _vm._v(" "),
+                  _c("b-button", {
+                    domProps: {
+                      textContent: _vm._s(
+                        _vm.$store.getters.getExpandedTasks
+                          ? "Show Tasks: Yes"
+                          : "Show Tasks: No"
+                      )
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.expandTasks()
+                      }
+                    }
+                  })
                 ],
                 1
               )
@@ -85368,7 +85455,7 @@ var render = function() {
                                 attrs: {
                                   type: "text",
                                   required: "",
-                                  rows: "4",
+                                  rows: "2",
                                   placeholder: "Title"
                                 },
                                 model: {
@@ -85383,28 +85470,34 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _c(
-                            "b-form-group",
-                            { attrs: { label: "Description:" } },
-                            [
-                              _c("b-form-textarea", {
-                                attrs: {
-                                  type: "text",
-                                  rows: "5",
-                                  required: "",
-                                  placeholder: "description"
-                                },
-                                model: {
-                                  value: _vm.formData.description,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.formData, "description", $$v)
-                                  },
-                                  expression: "formData.description"
-                                }
-                              })
-                            ],
-                            1
-                          ),
+                          _vm.$store.getters.getExpandedView
+                            ? _c(
+                                "b-form-group",
+                                { attrs: { label: "Description:" } },
+                                [
+                                  _c("b-form-textarea", {
+                                    attrs: {
+                                      type: "text",
+                                      rows: "3",
+                                      required: "",
+                                      placeholder: "description"
+                                    },
+                                    model: {
+                                      value: _vm.formData.description,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.formData,
+                                          "description",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "formData.description"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("notes", {
                             attrs: {
@@ -85467,11 +85560,11 @@ var render = function() {
                                     modifiers: { "accordion-1": true }
                                   }
                                 ],
-                                staticClass: "text-left text-light",
+                                staticClass: "text-left",
                                 attrs: {
                                   block: "",
                                   href: "#",
-                                  variant: "info"
+                                  variant: "light"
                                 },
                                 domProps: {
                                   textContent: _vm._s(
@@ -85488,7 +85581,6 @@ var render = function() {
                             {
                               attrs: {
                                 id: "accordion-1",
-                                visible: "",
                                 accordion: "my-accordion",
                                 role: "tabpanel"
                               }
@@ -85546,11 +85638,11 @@ var render = function() {
                                     modifiers: { "accordion-2": true }
                                   }
                                 ],
-                                staticClass: "text-left text-light",
+                                staticClass: "text-left",
                                 attrs: {
                                   block: "",
                                   href: "#",
-                                  variant: "info"
+                                  variant: "light"
                                 },
                                 domProps: {
                                   textContent: _vm._s(
@@ -85619,11 +85711,11 @@ var render = function() {
                                     modifiers: { "accordion-3": true }
                                   }
                                 ],
-                                staticClass: "text-left text-light",
+                                staticClass: "text-left",
                                 attrs: {
                                   block: "",
                                   href: "#",
-                                  variant: "info"
+                                  variant: "light"
                                 },
                                 domProps: {
                                   textContent: _vm._s(
@@ -101981,6 +102073,10 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
     // array of grocery items
     items: [],
+    expanded: {
+      view: true,
+      tasks: true
+    },
     token: "ASASDADsdfsdfSADFA!@#",
     // array of ongoing tasks. We keep track of the tasks to show/hide the
     // activity indicator in the groceries page.
@@ -102035,11 +102131,26 @@ Vue.mixin({
       if (text) return text.replace(/;/g, '\n');
     },
     postData: function postData(route, data) {
+      var isComment = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       self = this;
       axios.post(route, data).then(function (response) {
-        self.$store.dispatch('setOkrComment', response.data);
-        return response.data;
+        if (isComment) {
+          self.$store.dispatch('setOkrComment', response.data);
+        }
+
+        self.$bvToast.toast("Data Saved", {
+          title: 'Server Response',
+          autoHideDelay: 3000,
+          variant: 'primary',
+          solid: true
+        });
       })["catch"](function (response) {
+        self.$bvToast.toast("Something went wrong", {
+          title: 'Server Response',
+          autoHideDelay: 3000,
+          variant: 'danger',
+          solid: true
+        });
         console.log('error' + response);
       });
     },
@@ -102059,6 +102170,9 @@ Vue.mixin({
     },
     getStyle: function getStyle(status) {
       return 'status-' + status.toLowerCase();
+    },
+    copyComputed: function copyComputed(comp) {
+      return JSON.parse(JSON.stringify(comp));
     }
   }
 });
@@ -102783,7 +102897,7 @@ var setOkrStatuses = function setOkrStatuses(context, data) {
 /*!***************************************!*\
   !*** ./resources/js/store/getters.js ***!
   \***************************************/
-/*! exports provided: getUsers, getOkrs, getOkr, getOkrStatuses, globalValues */
+/*! exports provided: getUsers, getOkrs, getOkr, getOkrStatuses, getExpandedView, getExpandedTasks, globalValues */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -102792,6 +102906,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkrs", function() { return getOkrs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkr", function() { return getOkr; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOkrStatuses", function() { return getOkrStatuses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getExpandedView", function() { return getExpandedView; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getExpandedTasks", function() { return getExpandedTasks; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "globalValues", function() { return globalValues; });
 var getUsers = function getUsers(state) {
   // while there is at least one task processing, return true
@@ -102806,6 +102922,12 @@ var getOkr = function getOkr(state) {
 };
 var getOkrStatuses = function getOkrStatuses(state) {
   return state.okrs_statuses;
+};
+var getExpandedView = function getExpandedView(state) {
+  return state.expanded.view;
+};
+var getExpandedTasks = function getExpandedTasks(state) {
+  return state.expanded.tasks;
 };
 var globalValues = function globalValues(state) {
   var configValues = {
@@ -102824,7 +102946,7 @@ var globalValues = function globalValues(state) {
 /*!**********************************************!*\
   !*** ./resources/js/store/mutation-types.js ***!
   \**********************************************/
-/*! exports provided: SET_ITEMS, SET_USERS, SET_OKRS, SET_OKR, SET_OKR_KR_STATUSES, SET_OKR_COMMENTS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, ADD_PROCESSING_TASK, REMOVE_PROCESSING_TASK */
+/*! exports provided: SET_ITEMS, SET_USERS, SET_OKRS, SET_OKR, SET_OKR_KR_STATUSES, SET_OKR_COMMENTS, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, EXPANDED_VIEW, EXPANDED_TASKS, ADD_PROCESSING_TASK, REMOVE_PROCESSING_TASK */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -102838,6 +102960,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_ITEM", function() { return ADD_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_ITEM", function() { return UPDATE_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_ITEM", function() { return DELETE_ITEM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EXPANDED_VIEW", function() { return EXPANDED_VIEW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EXPANDED_TASKS", function() { return EXPANDED_TASKS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_PROCESSING_TASK", function() { return ADD_PROCESSING_TASK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_PROCESSING_TASK", function() { return REMOVE_PROCESSING_TASK; });
 // items mutations
@@ -102849,7 +102973,9 @@ var SET_OKR_KR_STATUSES = 'SET_OKR_KR_STATUSES';
 var SET_OKR_COMMENTS = 'SET_OKR_COMMENTS';
 var ADD_ITEM = 'ADD_ITEM';
 var UPDATE_ITEM = 'UPDATE_ITEM';
-var DELETE_ITEM = 'DELETE_ITEM'; // tasks mutations
+var DELETE_ITEM = 'DELETE_ITEM';
+var EXPANDED_VIEW = 'EXPANDED_VIEW';
+var EXPANDED_TASKS = 'EXPANDED_TASKS'; // tasks mutations
 
 var ADD_PROCESSING_TASK = 'ADD_PROCESSING_TASK';
 var REMOVE_PROCESSING_TASK = 'REMOVE_PROCESSING_TASK';
@@ -102908,6 +103034,10 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 }), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR_KR_STATUSES"], function (state, statuses) {
   console.log('GETTING statuses', statuses);
   state.okrs_statuses = statuses;
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["EXPANDED_VIEW"], function (state) {
+  state.expanded.view = !state.expanded.view;
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["EXPANDED_TASKS"], function (state) {
+  state.expanded.tasks = !state.expanded.tasks;
 }), _mutations);
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
 

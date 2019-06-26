@@ -34,6 +34,7 @@ const store = new Vuex.Store({
     state: {
         // array of grocery items
         items: [],
+        expanded:{view:true, tasks:true},
         token: "ASASDADsdfsdfSADFA!@#",
         // array of ongoing tasks. We keep track of the tasks to show/hide the
         // activity indicator in the groceries page.
@@ -88,12 +89,25 @@ Vue.mixin({
         if (text)
         return text.replace(/;/g,'\n')
       },
-      postData(route,  data){
+      postData(route,  data, isComment = false){
         self = this
         axios.post(route, data).then(function(response){
-            self.$store.dispatch('setOkrComment',response.data)
-            return response.data
+            if(isComment){
+                self.$store.dispatch('setOkrComment',response.data)
+            }
+            self.$bvToast.toast(`Data Saved`, {
+                title: 'Server Response',
+                autoHideDelay: 3000,
+                variant: 'primary',
+                solid: true
+            })
         }).catch(function(response) {
+            self.$bvToast.toast(`Something went wrong`, {
+                title: 'Server Response',
+                autoHideDelay: 3000,
+                variant: 'danger',
+                solid: true
+            })
             console.log('error' + response)
         })
       },
@@ -114,7 +128,9 @@ Vue.mixin({
       getStyle(status){
           return 'status-' +  status.toLowerCase()
       },
-
+      copyComputed(comp){
+          return JSON.parse(JSON.stringify(comp))
+      }
 
   }
 });

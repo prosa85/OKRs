@@ -8,6 +8,8 @@ export const SET_OKR_COMMENTS = 'SET_OKR_COMMENTS'
 export const ADD_ITEM = 'ADD_ITEM'
 export const UPDATE_ITEM = 'UPDATE_ITEM'
 export const DELETE_ITEM = 'DELETE_ITEM'
+export const EXPANDED_VIEW = 'EXPANDED_VIEW'
+export const EXPANDED_TASKS = 'EXPANDED_TASKS'
 
 // tasks mutations
 export const ADD_PROCESSING_TASK = 'ADD_PROCESSING_TASK'

@@ -12,6 +12,12 @@ export const getOkr = state => {
 export const getOkrStatuses = state => {
     return state.okrs_statuses
 }
+export const getExpandedView = state => {
+    return state.expanded.view
+}
+export const getExpandedTasks = state => {
+    return state.expanded.tasks
+}
 export const globalValues = state => {
  let configValues = {
      categories: ["#Q2C", "#P&S", "#BO", "#R&D"],
