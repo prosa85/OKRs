@@ -1728,6 +1728,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "kr-card",
@@ -1741,7 +1742,7 @@ __webpack_require__.r(__webpack_exports__);
     completeKr: function completeKr() {
       var form = this.kr;
       form.status = 'Completed';
-      this.putData("/api/krs/" + this.kr.id, form);
+      this.putData("/api/krs/" + this.kr.id, form, false);
       window.alert('Setting KR id ' + kr.id + ' Status to Completed');
       this.getData(routes.api.okrs.show(this.kr.OKR_id), "Okr", "fetchOkr");
     }
@@ -2054,6 +2055,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _KrCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./KrCard */ "./resources/js/components/KrCard.vue");
 /* harmony import */ var _notesList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./notesList */ "./resources/js/components/notesList.vue");
+//
+//
 //
 //
 //
@@ -84837,7 +84840,7 @@ var render = function() {
                         attrs: { variant: "success" },
                         on: { click: _vm.completeKr }
                       },
-                      [_vm._v("Complete\n            ")]
+                      [_c("i", { staticClass: "fa fa-check" })]
                     )
                   : _vm._e()
               ],
@@ -85379,33 +85382,7 @@ var render = function() {
                       on: { click: _vm.updateOKR }
                     },
                     [_vm._v("Update OKR")]
-                  ),
-                  _vm._v(" "),
-                  _c("b-button", {
-                    domProps: {
-                      textContent: _vm._s(
-                        _vm.$store.getters.getExpandedView
-                          ? "Expanded Yes"
-                          : "Expanded No"
-                      )
-                    },
-                    on: { click: _vm.expandView }
-                  }),
-                  _vm._v(" "),
-                  _c("b-button", {
-                    domProps: {
-                      textContent: _vm._s(
-                        _vm.$store.getters.getExpandedTasks
-                          ? "Show Tasks: Yes"
-                          : "Show Tasks: No"
-                      )
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.expandTasks()
-                      }
-                    }
-                  })
+                  )
                 ],
                 1
               )
@@ -85766,6 +85743,39 @@ var render = function() {
                             ],
                             1
                           )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex justify-content-around" },
+                        [
+                          _c("b-button", {
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.$store.getters.getExpandedView
+                                  ? "Expanded Yes"
+                                  : "Expanded No"
+                              )
+                            },
+                            on: { click: _vm.expandView }
+                          }),
+                          _vm._v(" "),
+                          _c("b-button", {
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.$store.getters.getExpandedTasks
+                                  ? "Show Tasks: Yes"
+                                  : "Show Tasks: No"
+                              )
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.expandTasks()
+                              }
+                            }
+                          })
                         ],
                         1
                       )
@@ -102134,20 +102144,20 @@ Vue.mixin({
       var isComment = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       self = this;
       axios.post(route, data).then(function (response) {
-        if (isComment) {
+        if (isComment === true) {
           self.$store.dispatch('setOkrComment', response.data);
         }
 
         self.$bvToast.toast("Data Saved", {
-          title: 'Server Response',
-          autoHideDelay: 3000,
+          title: 'Server Response: Create',
+          autoHideDelay: 2000,
           variant: 'primary',
           solid: true
         });
       })["catch"](function (response) {
         self.$bvToast.toast("Something went wrong", {
           title: 'Server Response',
-          autoHideDelay: 3000,
+          autoHideDelay: 2000,
           variant: 'danger',
           solid: true
         });
@@ -102157,8 +102167,12 @@ Vue.mixin({
     putData: function putData(route, data) {
       self = this;
       axios.put(route, data).then(function (response) {
-        self.$store.dispatch('setOkrComment', response.data);
-        return response.data;
+        self.$bvToast.toast("Data Updated", {
+          title: 'Server Response: Update',
+          autoHideDelay: 2000,
+          variant: 'success',
+          solid: true
+        });
       })["catch"](function (response) {
         console.log('error' + response);
       });

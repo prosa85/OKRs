@@ -6,8 +6,6 @@
                 <h3 v-text="'OKR '+ okr.id"></h3>
                 <div class="text-right">
                     <b-button @click="updateOKR" variant="success">Update OKR</b-button>
-                    <b-button @click="expandView" v-text="$store.getters.getExpandedView? 'Expanded Yes':'Expanded No' "></b-button>
-                    <b-button @click="expandTasks()" v-text="$store.getters.getExpandedTasks? 'Show Tasks: Yes':'Show Tasks: No' "></b-button>
                 </div>
             </div>
             <p> Created By: {{okr.user.first_name + " " + okr.user.last_name }}</p>
@@ -88,6 +86,10 @@
                                 </b-card-body>
                             </b-collapse>
                         </b-card>
+                        <div class="d-flex justify-content-around">
+                            <b-button @click="expandView" v-text="$store.getters.getExpandedView? 'Expanded Yes':'Expanded No' "></b-button>
+                            <b-button @click="expandTasks()" v-text="$store.getters.getExpandedTasks? 'Show Tasks: Yes':'Show Tasks: No' "></b-button>
+                        </div>
                     </div>
                 </b-col>
             </b-form-row>

@@ -92,19 +92,19 @@ Vue.mixin({
       postData(route,  data, isComment = false){
         self = this
         axios.post(route, data).then(function(response){
-            if(isComment){
+            if(isComment === true){
                 self.$store.dispatch('setOkrComment',response.data)
             }
             self.$bvToast.toast(`Data Saved`, {
-                title: 'Server Response',
-                autoHideDelay: 3000,
+                title: 'Server Response: Create',
+                autoHideDelay: 2000,
                 variant: 'primary',
                 solid: true
             })
         }).catch(function(response) {
             self.$bvToast.toast(`Something went wrong`, {
                 title: 'Server Response',
-                autoHideDelay: 3000,
+                autoHideDelay: 2000,
                 variant: 'danger',
                 solid: true
             })
@@ -114,8 +114,12 @@ Vue.mixin({
       putData(route,  data){
           self = this
           axios.put(route, data).then(function(response){
-              self.$store.dispatch('setOkrComment',response.data)
-              return response.data
+              self.$bvToast.toast(`Data Updated`, {
+                  title: 'Server Response: Update',
+                  autoHideDelay: 2000,
+                  variant: 'success',
+                  solid: true
+              })
           }).catch(function(response) {
               console.log('error' + response)
           })

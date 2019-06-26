@@ -8,7 +8,8 @@
                           class=""
                           v-if="kr.pendingTasks==0 && kr.status!='Completed'"
                           @click="completeKr"
-                >Complete
+                >
+                    <i class="fa fa-check"></i>
                 </b-button>
             </div>
                 <span v-text="'KR '+kr.id+' '+kr.title"></span>
@@ -41,7 +42,7 @@
         completeKr() {
             let form = this.kr
             form.status = 'Completed'
-            this.putData("/api/krs/"+ this.kr.id, form);
+            this.putData("/api/krs/"+ this.kr.id, form, false);
             window.alert('Setting KR id ' + kr.id + ' Status to Completed');
             this.getData(routes.api.okrs.show(this.kr.OKR_id), "Okr", "fetchOkr");
         },
