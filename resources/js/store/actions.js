@@ -17,6 +17,15 @@ export const fetchOkrs = (context, data) => {
 export const fetchOkr = (context, data) => {
     context.commit(types.SET_OKR, data)
 }
+export const fetchCurrentOkr = (context) => {
+    let id = context.getters.getOkr.id
+    axios.get('/api/okrs/'+id)
+        .then(response => {
+            context.commit(types.SET_OKR,response.data)
+        })
+        .catch(response => {console.log('there was an error',response) })
+}
+
 export const setOkrComment = (context, data) => {
     context.commit(types.SET_OKR_COMMENTS, data)
 }

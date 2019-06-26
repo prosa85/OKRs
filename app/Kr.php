@@ -40,4 +40,5 @@ class Kr extends Model
     public function getpendingTasksAttribute(){
         return $this->tasks()->where('status', '!=','Completed' )->count();
     }
+
 }

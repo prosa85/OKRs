@@ -7,7 +7,7 @@
         <div class="text-right">Pending: {{kr.pendingTasks}}</div>
         <ul v-for="task in kr.tasks" class="list-group">
             <li class="list-group-item mt-1">
-                <kr-task :task="task"></kr-task>
+                <kr-task :task="task" v-on:selected="selectTask(task)"></kr-task>
             </li>
         </ul>
         <div id="task-modal">
@@ -55,8 +55,18 @@
                         size="sm"
                         class="float-right"
                         @click="createTask"
+                        v-if="createTaskMode"
                     >
                         Create
+                    </b-button>
+                    <b-button
+                        variant="success"
+                        size="sm"
+                        class="float-right"
+                        @click="updateTask"
+                        v-if="updateTaskMode"
+                    >
+                        Update Task
                     </b-button>
                 </template>
             </b-modal>
@@ -77,12 +87,14 @@
             selectedTask:{},
             showModal:false,
             createTaskMode:false,
+            updateTaskMode:false,
 
         }
       },
       methods:{
         selectTask(task){
             this.selectedTask= task;
+            this.updateTaskMode = true;
             this.showModal = true;
         },
         activateTaskCreateMode(){
@@ -91,9 +103,19 @@
             this.selectedTask = this.copyComputed(this.emptyBo)
         },
         createTask(){
-            this.createTaskMode = true
+            this.createTaskMode = false
             this.showModal = false
-            this.postData('/api/kr-tasks', this.selectedTask);
+            this.postData('/api/kr-tasks', this.selectedTask).then(()=>{
+                    this.$store.dispatch('fetchCurrentOkr')
+                })
+        },
+        updateTask(){
+            this.updateTaskMode = false
+            this.showModal = false
+            this.putData('/api/kr-tasks/'+this.selectedTask.id, this.selectedTask).then(() => {
+                this.$store.dispatch('fetchCurrentOkr')
+            });
+
         },
       },
       computed:{

@@ -8,13 +8,13 @@
                           class=""
                           v-if="kr.pendingTasks==0 && kr.status!='Completed'"
                           @click="completeKr"
+                          title="Set status to Completed"
+                          size="sm"
                 >
                     <i class="fa fa-check"></i>
                 </b-button>
             </div>
                 <span v-text="'KR '+kr.id+' '+kr.title"></span>
-
-
         </b-card-title>
         <b-card-text>
             <div v-if="kr.completion_date"><strong>Completion Date: <span v-text="kr.completion_date"></span></strong></div>

@@ -1826,6 +1826,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "tasts-list",
@@ -1839,12 +1849,14 @@ __webpack_require__.r(__webpack_exports__);
     return {
       selectedTask: {},
       showModal: false,
-      createTaskMode: false
+      createTaskMode: false,
+      updateTaskMode: false
     };
   },
   methods: {
     selectTask: function selectTask(task) {
       this.selectedTask = task;
+      this.updateTaskMode = true;
       this.showModal = true;
     },
     activateTaskCreateMode: function activateTaskCreateMode() {
@@ -1853,9 +1865,22 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedTask = this.copyComputed(this.emptyBo);
     },
     createTask: function createTask() {
-      this.createTaskMode = true;
+      var _this = this;
+
+      this.createTaskMode = false;
       this.showModal = false;
-      this.postData('/api/kr-tasks', this.selectedTask);
+      this.postData('/api/kr-tasks', this.selectedTask).then(function () {
+        _this.$store.dispatch('fetchCurrentOkr');
+      });
+    },
+    updateTask: function updateTask() {
+      var _this2 = this;
+
+      this.updateTaskMode = false;
+      this.showModal = false;
+      this.putData('/api/kr-tasks/' + this.selectedTask.id, this.selectedTask).then(function () {
+        _this2.$store.dispatch('fetchCurrentOkr');
+      });
     }
   },
   computed: {
@@ -1958,10 +1983,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "task",
   props: {
     task: {}
+  },
+  methods: {
+    selectTask: function selectTask() {
+      this.$emit('selected');
+    }
   }
 });
 
@@ -84837,7 +84870,11 @@ var render = function() {
                   ? _c(
                       "b-button",
                       {
-                        attrs: { variant: "success" },
+                        attrs: {
+                          variant: "success",
+                          title: "Set status to Completed",
+                          size: "sm"
+                        },
                         on: { click: _vm.completeKr }
                       },
                       [_c("i", { staticClass: "fa fa-check" })]
@@ -84965,7 +85002,16 @@ var render = function() {
           _c(
             "li",
             { staticClass: "list-group-item mt-1" },
-            [_c("kr-task", { attrs: { task: task } })],
+            [
+              _c("kr-task", {
+                attrs: { task: task },
+                on: {
+                  selected: function($event) {
+                    return _vm.selectTask(task)
+                  }
+                }
+              })
+            ],
             1
           )
         ])
@@ -85095,15 +85141,37 @@ var render = function() {
                 "template",
                 { slot: "modal-footer" },
                 [
-                  _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right",
-                      attrs: { variant: "primary", size: "sm" },
-                      on: { click: _vm.createTask }
-                    },
-                    [_vm._v("\n                    Create\n                ")]
-                  )
+                  _vm.createTaskMode
+                    ? _c(
+                        "b-button",
+                        {
+                          staticClass: "float-right",
+                          attrs: { variant: "primary", size: "sm" },
+                          on: { click: _vm.createTask }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Create\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.updateTaskMode
+                    ? _c(
+                        "b-button",
+                        {
+                          staticClass: "float-right",
+                          attrs: { variant: "success", size: "sm" },
+                          on: { click: _vm.updateTask }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Update Task\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ],
                 1
               )
@@ -85220,7 +85288,17 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div")
+    _c("div", { staticClass: "text-right" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-link stretched-link",
+          attrs: { title: "Update Task" },
+          on: { click: _vm.selectTask }
+        },
+        [_c("i", { staticClass: "fa fa-edit" })]
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -102143,38 +102221,44 @@ Vue.mixin({
     postData: function postData(route, data) {
       var isComment = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       self = this;
-      axios.post(route, data).then(function (response) {
-        if (isComment === true) {
-          self.$store.dispatch('setOkrComment', response.data);
-        }
+      return new Promise(function (resolve, reject) {
+        axios.post(route, data).then(function (response) {
+          if (isComment === true) {
+            self.$store.dispatch('setOkrComment', response.data);
+          }
 
-        self.$bvToast.toast("Data Saved", {
-          title: 'Server Response: Create',
-          autoHideDelay: 2000,
-          variant: 'primary',
-          solid: true
+          self.$bvToast.toast("Data Saved", {
+            title: 'Server Response: Create',
+            autoHideDelay: 2000,
+            variant: 'primary',
+            solid: true
+          });
+          resolve();
+        })["catch"](function (response) {
+          self.$bvToast.toast("Something went wrong", {
+            title: 'Server Response',
+            autoHideDelay: 2000,
+            variant: 'danger',
+            solid: true
+          });
+          console.log('error' + response);
         });
-      })["catch"](function (response) {
-        self.$bvToast.toast("Something went wrong", {
-          title: 'Server Response',
-          autoHideDelay: 2000,
-          variant: 'danger',
-          solid: true
-        });
-        console.log('error' + response);
       });
     },
     putData: function putData(route, data) {
       self = this;
-      axios.put(route, data).then(function (response) {
-        self.$bvToast.toast("Data Updated", {
-          title: 'Server Response: Update',
-          autoHideDelay: 2000,
-          variant: 'success',
-          solid: true
+      return new Promise(function (resolve, reject) {
+        axios.put(route, data).then(function (response) {
+          self.$bvToast.toast("Data Updated", {
+            title: 'Server Response: Update',
+            autoHideDelay: 2000,
+            variant: 'success',
+            solid: true
+          });
+          resolve();
+        })["catch"](function (response) {
+          console.log('error' + response);
         });
-      })["catch"](function (response) {
-        console.log('error' + response);
       });
     },
     deleteData: function deleteData(route, id) {
@@ -102870,7 +102954,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************!*\
   !*** ./resources/js/store/actions.js ***!
   \***************************************/
-/*! exports provided: deleteItem, fetchUsers, fetchOkrs, fetchOkr, setOkrComment, setOkrStatuses */
+/*! exports provided: deleteItem, fetchUsers, fetchOkrs, fetchOkr, fetchCurrentOkr, setOkrComment, setOkrStatuses */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -102879,6 +102963,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUsers", function() { return fetchUsers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchOkrs", function() { return fetchOkrs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchOkr", function() { return fetchOkr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchCurrentOkr", function() { return fetchCurrentOkr; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOkrComment", function() { return setOkrComment; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOkrStatuses", function() { return setOkrStatuses; });
 /* harmony import */ var _mutation_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mutation-types */ "./resources/js/store/mutation-types.js");
@@ -102898,6 +102983,14 @@ var fetchOkrs = function fetchOkrs(context, data) {
 };
 var fetchOkr = function fetchOkr(context, data) {
   context.commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR"], data);
+};
+var fetchCurrentOkr = function fetchCurrentOkr(context) {
+  var id = context.getters.getOkr.id;
+  axios.get('/api/okrs/' + id).then(function (response) {
+    context.commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR"], response.data);
+  })["catch"](function (response) {
+    console.log('there was an error', response);
+  });
 };
 var setOkrComment = function setOkrComment(context, data) {
   context.commit(_mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_OKR_COMMENTS"], data);

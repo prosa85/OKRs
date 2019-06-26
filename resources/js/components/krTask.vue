@@ -11,7 +11,10 @@
         <div>Assigned to: <span class="text-success"
                   v-text="task.user.first_name+ '  ' +task.user.last_name"></span>
         </div>
-        <div>
+        <div class="text-right">
+            <button class="btn btn-link stretched-link" title="Update Task" @click="selectTask">
+                <i class="fa fa-edit"></i>
+            </button>
         </div>
     </div>
 </template>
@@ -20,6 +23,11 @@
         name: "task",
         props: {
             task: {}
+        },
+        methods:{
+            selectTask(){
+                this.$emit('selected')
+            }
         }
     };
 </script>
