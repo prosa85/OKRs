@@ -34,7 +34,7 @@ const store = new Vuex.Store({
     state: {
         // array of grocery items
         items: [],
-        expanded:{view:true, tasks:true},
+        expanded:{view:false, tasks:false},
         token: "ASASDADsdfsdfSADFA!@#",
         // array of ongoing tasks. We keep track of the tasks to show/hide the
         // activity indicator in the groceries page.
@@ -139,7 +139,7 @@ import users from './components/UsersComponent.vue';
 import okrview from './components/okrView.vue';
 
 const vr = [
-    {path:'/', component: okrs},
+    {path:'/', component: okrs, name:'home'},
     { path: '/okrs', component: okrs , name:'okrs'},
     { path: '/okrs/:id', component: okrview, name:'okrs.show' },
     { path: '/users', component: users }

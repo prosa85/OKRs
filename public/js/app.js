@@ -102074,8 +102074,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
     // array of grocery items
     items: [],
     expanded: {
-      view: true,
-      tasks: true
+      view: false,
+      tasks: false
     },
     token: "ASASDADsdfsdfSADFA!@#",
     // array of ongoing tasks. We keep track of the tasks to show/hide the
@@ -102181,7 +102181,8 @@ Vue.mixin({
 
 var vr = [{
   path: '/',
-  component: _components_okrs_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+  component: _components_okrs_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+  name: 'home'
 }, {
   path: '/okrs',
   component: _components_okrs_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
