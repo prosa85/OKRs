@@ -5,28 +5,30 @@
             <b-button @click="activateTaskCreateMode" variant="link" pill size="md"> <i class="fas fa-plus-circle"></i></b-button>
         </div>
         <div class="text-right">Pending: {{kr.pendingTasks}}</div>
-        <ul v-for="task in kr.tasks" class="list-group">
-            <li class="list-group-item mt-1">
-                <kr-task :task="task" v-on:selected="selectTask(task)"></kr-task>
-            </li>
-        </ul>
+<!--        <ul v-for="task in kr.tasks" class="list-group">-->
+<!--            <li class="list-group-item mt-1">-->
+        <template v-for="task in kr.tasks">
+                <kr-task :task="task" v-on:selected="selectTask(task)" ></kr-task>
+        </template>
+<!--            </li>-->
+<!--        </ul>-->
         <div id="task-modal">
             <b-modal v-model="showModal">
                 <div slot="modal-title">
                     <div v-if="createTaskMode">Create New Task for KR {{ kr.id }}</div>
-                    <div v-else>Task Id {{ selectedTask.id }}</div>
+                    <div v-else>Task: {{ selectedTask.id }}</div>
                 </div>
 
                 <div>
                     <b-form>
+                        <b-form-group label="Title:">
+                            <b-form-input v-model="selectedTask.title">
+                            </b-form-input>
+                        </b-form-group>
                         <b-form-group label="Status:">
                             <b-form-select v-model="selectedTask.status"
                                            :options="$store.getters.globalValues.status">
                             </b-form-select>
-                        </b-form-group>
-                        <b-form-group label="Title:">
-                            <b-form-input v-model="selectedTask.title">
-                            </b-form-input>
                         </b-form-group>
                         <b-form-group
                             label="Description:"

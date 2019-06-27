@@ -3,7 +3,7 @@
         <!--<input v-model="message">-->
         <div v-if="okrs.length > 0" class="row justify-content-left">
             <div class="col-md-6 okr-block" v-for="okr in okrs">
-                <!-- :class="getOkrStatus(okr)"-->
+                <!-- :class="getCardBorderStatus(okr)"-->
                 <div class="card border-okr-card border" :class="okr.status == 'Completed'? 'border-success':''">
                     <div class="card-header">
                         <router-link :to="{ name: 'okrs.show', params: { id: okr.id }}"><span
@@ -108,21 +108,6 @@
             },
             getKRRoute(id) {
                 return routes.ui.krs.show(id);
-            },
-            getOkrStatus(okr) {
-                let total = okr.krs.length;
-                let hold = okr.krs.filter(function(item) {
-                    return item.status == "Hold";
-                }).length;
-
-                let level = hold * 100 / total;
-                let css_class = "border-success";
-                if (level > 50) {
-                    css_class = "border-danger";
-                } else if (level > 30) {
-                    css_class = "border-warning";
-                }
-                return css_class;
             },
             getStatusCountForKrs(okr) {
                 let total = okr.krs.length;

@@ -147,16 +147,6 @@
             this.getData(routes.api.okrs.status(this.$route.params.id), "Okr", "setOkrStatuses")
             this.getData(routes.users.index, "Users", "fetchUsers");
         },
-        computed: {
-            okr() {
-                return this.$store.getters.getOkr;
-            },
-        },
-        watch: {
-            okr: function() {
-                this.formData = this.okr;
-            }
-        },
         methods: {
             updateOKR() {
                 this.putData("/api/okrs/"+this.okr.id, this.formData);
@@ -170,6 +160,16 @@
             expandTasks(){
                 this.$store.commit('EXPANDED_TASKS')
             }
+        },
+        watch: {
+            okr: function() {
+                this.formData = this.copyComputed(this.okr)
+            }
+        },
+        computed: {
+            okr() {
+                return this.$store.getters.getOkr;
+            },
         }
     };
 </script>

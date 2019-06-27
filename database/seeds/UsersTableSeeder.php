@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
         $users['famoon'] = [ 'first_name' => "Foad", 'last_name' => "Amoon", 'supervisor_id'=>1 ,'title' => "Director", 'email' => "famoon@vxchnge.com", 'role' => 1, 'department' => 1, 'password' => bcrypt("test"), 'api_token' => Str::random(60)] ;
         $users['prosa'] = [ 'first_name' => "Pablo", 'last_name' => "Rosa", 'supervisor_id'=>2 ,'title' => "Developer", 'email' => "prosa@vxchnge.com", 'role' => 1, 'department' => 1, 'password' => bcrypt("test"), 'api_token' => Str::random(60),] ;
 
+
           foreach($users as $user){
             User::create($user);
 

@@ -1,6 +1,7 @@
 <template>
     <div>
-    <b-card >
+    <b-card :border-variant="getCardBorderStatus(kr.status)">
+
         <b-card-title title-tag="h5">
             <div class="text-right" :class="getStyle(kr.status)">
                 <strong>KR status: <span v-text="kr.status"></span></strong>

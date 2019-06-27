@@ -141,7 +141,15 @@ Vue.mixin({
       },
       copyComputed(comp){
           return JSON.parse(JSON.stringify(comp))
-      }
+      },
+      getCardBorderStatus(status) {
+            let border = {
+                Active: 'primary',
+                Hold:'danger',
+                Completed:'success'
+            }
+            return border[status]
+      },
 
   }
 });
