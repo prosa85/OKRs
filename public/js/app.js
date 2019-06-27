@@ -2252,9 +2252,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateOKR: function updateOKR() {
-      this.putData("/api/okrs/" + this.okr.id, this.formData);
-      window.alert('OKR changes stored');
-      this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
+      var _this = this;
+
+      this.putData("/api/okrs/" + this.okr.id, this.formData).then(function () {
+        _this.$store.dispatch('fetchCurrentOkr');
+      });
     },
     expandView: function expandView() {
       this.$store.commit('EXPANDED_VIEW');

@@ -149,9 +149,9 @@
         },
         methods: {
             updateOKR() {
-                this.putData("/api/okrs/"+this.okr.id, this.formData);
-                window.alert('OKR changes stored');
-                this.getData(routes.api.okrs.show(this.$route.params.id), "Okr", "fetchOkr");
+                this.putData("/api/okrs/"+this.okr.id, this.formData).then(() => {
+                    this.$store.dispatch('fetchCurrentOkr')
+                });
 
             },
             expandView(){
