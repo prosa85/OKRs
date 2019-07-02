@@ -18,6 +18,7 @@ class Task extends Model
     public function user(){
         return $this->belongsTo(\App\User::class);
     }
+
     public function kr(){
         return $this->belongsTo(\App\Kr::class);
     }

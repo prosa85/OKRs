@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use App\Notifications\testNotificationOffice;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,6 +33,12 @@ Route::resource('okrs','OkrsController');
 Route::resource('krs','KrsController');
 Route::resource('kr-tasks','TasksController');
 Route::get('/okrs/{id}/status', 'OkrsController@status');
+Route::get('/test-email', function(Request $request){
+    $me = App\User::find(4);
+//    dd($me);
+    $task = App\Task::first();
+    $me->notify(new testNotificationOffice($task));
+});
 
 //Route::group(['prefix' => 'krs'], function(){
 //    Route::get('/', function(Request $request){
