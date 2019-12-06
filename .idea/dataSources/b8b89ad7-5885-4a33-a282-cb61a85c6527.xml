@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="okrs">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.14">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.16">
     <root id="1">
       <ServerVersion>5.7.19</ServerVersion>
       <DefaultEngine>MyISAM</DefaultEngine>
@@ -33,7 +33,6 @@
     </schema>
     <schema id="10" parent="1" name="okrs">
       <Current>1</Current>
-      <Visible>1</Visible>
       <Collation>latin1_swedish_ci</Collation>
     </schema>
     <schema id="11" parent="1" name="performance_schema">
