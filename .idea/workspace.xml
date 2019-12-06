@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f423719-fb5c-4e4d-b4db-4f735f1e492e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/database/seeds/UsersTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/UsersTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/krModelFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/krModelFactory.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -266,7 +266,7 @@
       <workItem from="1558477418036" duration="16708000" />
       <workItem from="1558880669668" duration="8857000" />
       <workItem from="1560454985922" duration="45088000" />
-      <workItem from="1575670029130" duration="459000" />
+      <workItem from="1575670029130" duration="650000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit.">
       <created>1558364091555</created>
